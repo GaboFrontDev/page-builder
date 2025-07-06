@@ -1,6 +1,7 @@
 import React from 'react';
 import { ComponentData } from '../types';
 import Hero from './Hero';
+import { HeroIntroScroll } from '@shared/components';
 import TextSection from './TextSection';
 import ImageSection from './ImageSection';
 import ButtonSection from './ButtonSection';
@@ -18,6 +19,8 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component, theme 
   switch (component.type) {
     case 'hero':
       return <Hero component={component} theme={theme} />;
+    case 'hero-intro-scroll':
+      return <HeroIntroScroll content={component.content} styles={component.styles} isPreview={false} />;
     case 'text':
       return <TextSection component={component} theme={theme} />;
     case 'image':

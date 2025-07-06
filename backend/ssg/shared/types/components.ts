@@ -10,6 +10,7 @@ export interface ComponentData {
 
 export type ComponentType = 
   | 'hero' 
+  | 'hero-intro-scroll'
   | 'text' 
   | 'image' 
   | 'button' 
@@ -23,6 +24,13 @@ export interface ComponentContent {
   image?: string;
   cta_text?: string;
   cta_link?: string;
+  
+  // Hero Intro Scroll component
+  description?: string;
+  button?: {
+    label?: string;
+    href?: string;
+  };
   
   // Text component
   text?: string;

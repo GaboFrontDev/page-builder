@@ -14,7 +14,8 @@ export type ComponentType =
   | 'image' 
   | 'button' 
   | 'header' 
-  | 'footer';
+  | 'footer'
+  | 'hero-intro-scroll';
 
 export interface ComponentContent {
   // Hero component
@@ -23,6 +24,13 @@ export interface ComponentContent {
   image?: string;
   cta_text?: string;
   cta_link?: string;
+  
+  // Hero Intro Scroll component
+  description?: string;
+  button?: {
+    label?: string;
+    href?: string;
+  };
   
   // Text component
   text?: string;

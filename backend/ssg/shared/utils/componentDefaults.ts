@@ -9,6 +9,16 @@ export const getDefaultContent = (type: ComponentType): ComponentContent => {
         cta_text: 'Botón de acción',
         cta_link: '#'
       };
+    case 'hero-intro-scroll':
+      return {
+        title: 'Título principal',
+        description: 'Descripción del hero con scroll',
+        image: 'https://via.placeholder.com/1920x1080',
+        button: {
+          label: 'Botón de acción',
+          href: '#'
+        }
+      };
     case 'header':
       return {
         title: 'Mi Sitio Web',
@@ -55,6 +65,11 @@ export const getDefaultStyles = (type: ComponentType): ComponentStyles => {
         padding: '80px 20px',
         textAlign: 'center'
       };
+    case 'hero-intro-scroll':
+      return {
+        height: '240vh',
+        width: '100%'
+      };
     case 'header':
       return {
         padding: '20px',
@@ -89,6 +104,7 @@ export const getDefaultStyles = (type: ComponentType): ComponentStyles => {
 export const componentTypes: ComponentType[] = [
   'header',
   'hero', 
+  'hero-intro-scroll',
   'text',
   'image',
   'button',
@@ -97,6 +113,7 @@ export const componentTypes: ComponentType[] = [
 
 export const componentLabels: Record<ComponentType, string> = {
   hero: 'Hero',
+  'hero-intro-scroll': 'Hero con Scroll',
   header: 'Encabezado',
   text: 'Texto',
   image: 'Imagen',

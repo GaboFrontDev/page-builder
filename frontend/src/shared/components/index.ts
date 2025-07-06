@@ -5,3 +5,4 @@ export { default as TextSection } from './base/TextSection';
 export { default as ImageSection } from './base/ImageSection';
 export { default as ButtonSection } from './base/ButtonSection';
 export { default as Footer } from './base/Footer';
+export { default as HeroIntroScroll } from './base/HeroIntroScroll';

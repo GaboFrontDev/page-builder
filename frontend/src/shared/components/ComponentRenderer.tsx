@@ -6,6 +6,7 @@ import TextSection from './base/TextSection';
 import ImageSection from './base/ImageSection';
 import ButtonSection from './base/ButtonSection';
 import Footer from './base/Footer';
+import HeroIntroScroll from './base/HeroIntroScroll';
 
 interface ComponentRendererProps {
   component: ComponentData;
@@ -25,6 +26,8 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({
   switch (component.type) {
     case 'hero':
       return <Hero {...componentProps} />;
+    case 'hero-intro-scroll':
+      return <HeroIntroScroll content={component.content} styles={component.styles} isPreview={isPreview} />;
     case 'header':
       return <Header {...componentProps} />;
     case 'text':
