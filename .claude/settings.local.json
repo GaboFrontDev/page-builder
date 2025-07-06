@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(mkdir:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(ls:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(docker-compose exec backend ls:*)",
+      "Bash(docker-compose exec:*)",
+      "Bash(docker-compose stop:*)",
+      "Bash(docker-compose:*)",
+      "Bash(python -m pytest test_main.py -v)",
+      "Bash(rm:*)",
+      "Bash(npm install)",
+      "Bash(npx playwright:*)"
+    ],
+    "deny": []
+  }
+}
