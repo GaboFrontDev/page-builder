@@ -99,3 +99,7 @@ class Asset(AssetBase):
     
     class Config:
         from_attributes = True
+
+class ComponentReorder(BaseModel):
+    page_id: int
+    component_ids: List[int]

@@ -4,7 +4,7 @@ from typing import List
 
 from database import get_db
 from models import Component, Page, User
-from schemas import Component as ComponentSchema, ComponentCreate, ComponentUpdate
+from schemas import Component as ComponentSchema, ComponentCreate, ComponentUpdate, ComponentReorder
 from auth import get_current_active_user
 
 router = APIRouter(prefix="/api/components", tags=["components"])
@@ -111,25 +111,24 @@ def delete_component(
 
 @router.post("/reorder")
 def reorder_components(
-    page_id: int,
-    component_ids: List[int],
+    reorder_data: ComponentReorder,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
     """Reordenar componentes de una página (solo el propietario)"""
-    verify_page_ownership(page_id, current_user, db)
+    verify_page_ownership(reorder_data.page_id, current_user, db)
     
     # Verificar que todos los componentes pertenezcan a la página
     components = db.query(Component).filter(
-        Component.id.in_(component_ids),
-        Component.page_id == page_id
+        Component.id.in_(reorder_data.component_ids),
+        Component.page_id == reorder_data.page_id
     ).all()
     
-    if len(components) != len(component_ids):
+    if len(components) != len(reorder_data.component_ids):
         raise HTTPException(status_code=400, detail="Some components not found or don't belong to this page")
     
     # Actualizar posiciones
-    for i, component_id in enumerate(component_ids):
+    for i, component_id in enumerate(reorder_data.component_ids):
         component = next(c for c in components if c.id == component_id)
         component.position = i
     
