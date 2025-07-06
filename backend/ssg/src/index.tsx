@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Page from './Page';
-import { PageData } from '../shared';
+import { PageData } from '@shared/index';
 
 // This will be called from the Python backend
 export function renderPageToString(pageData: PageData): string {
