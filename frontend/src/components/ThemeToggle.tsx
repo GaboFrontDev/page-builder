@@ -13,7 +13,8 @@ const ThemeToggle: React.FC = () => {
     >
       {isDark ? (
         <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m6.638-6.638l.707-.707m6.364-.707l-.707-.707M12 6.5a6.5 6.5 0 016.5 6.5c0 1.61-.59 3.09-1.56 4.234a6.5 6.5 0 11-10.88 0A6.5 6.5 0 015.5 13c0-1.61.59-3.09 1.56-4.234" />
+          <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+          <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
         </svg>
       ) : (
         <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
