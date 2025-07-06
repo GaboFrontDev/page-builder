@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentData, ComponentType } from '../types';
+import { ComponentData } from '../types';
 import Hero from './base/Hero';
 import Header from './base/Header';
 import TextSection from './base/TextSection';
