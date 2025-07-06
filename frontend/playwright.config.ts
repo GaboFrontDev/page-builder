@@ -22,7 +22,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: process.env.CI ? 'http://frontend:3000' : 'http://localhost:3000',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     /* Take screenshot on failure */
@@ -69,8 +69,8 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  webServer: [
+  /* Use existing Docker services - don't start new servers */
+  webServer: process.env.DOCKER_ENV ? undefined : [
     {
       command: 'cd ../backend && python -m uvicorn main:app --host 0.0.0.0 --port 3001',
       port: 3001,

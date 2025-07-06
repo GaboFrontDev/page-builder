@@ -3,7 +3,7 @@ import { Page, expect } from '@playwright/test';
 export class AuthHelper {
   constructor(private page: Page) {}
 
-  async register(email: string, username: string, password: string) {
+  async register(email: string, username: string, password: string, shouldSucceed: boolean = true) {
     await this.page.goto('/register');
     await this.page.fill('input[name="email"]', email);
     await this.page.fill('input[name="username"]', username);
@@ -11,18 +11,22 @@ export class AuthHelper {
     await this.page.fill('input[name="confirmPassword"]', password);
     await this.page.click('button[type="submit"]');
     
-    // Should redirect to dashboard after successful registration
-    await expect(this.page).toHaveURL('/');
+    if (shouldSucceed) {
+      // Should redirect to dashboard after successful registration
+      await expect(this.page).toHaveURL('/', { timeout: 10000 });
+    }
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, shouldSucceed: boolean = true) {
     await this.page.goto('/login');
     await this.page.fill('input[name="email"]', email);
     await this.page.fill('input[name="password"]', password);
     await this.page.click('button[type="submit"]');
     
-    // Should redirect to dashboard after successful login
-    await expect(this.page).toHaveURL('/');
+    if (shouldSucceed) {
+      // Should redirect to dashboard after successful login
+      await expect(this.page).toHaveURL('/', { timeout: 10000 });
+    }
   }
 
   async logout() {

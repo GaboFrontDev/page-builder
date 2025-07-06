@@ -92,8 +92,11 @@ const PageSettings: React.FC<PageSettingsProps> = ({
   ];
 
   const validateSlug = (slug: string): boolean => {
+    // Permitir slug vacío para páginas root
+    if (slug === '') return true;
+    
     const slugRegex = /^[a-z0-9-]+$/;
-    return slugRegex.test(slug) && slug.length > 0;
+    return slugRegex.test(slug);
   };
 
   const isSlugValid = validateSlug(formData.slug);
@@ -133,7 +136,7 @@ const PageSettings: React.FC<PageSettingsProps> = ({
             </label>
             <div className="flex items-center mb-2">
               <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-                {formData.subdomain}.localhost/{formData.slug}
+                {formData.subdomain}.localhost{formData.slug ? `/${formData.slug}` : ''}
               </span>
             </div>
             <input
@@ -142,7 +145,7 @@ const PageSettings: React.FC<PageSettingsProps> = ({
               onChange={(e) => handleInputChange('slug', e.target.value)}
               onFocus={handleSlugFocus}
               className={`form-input ${!isSlugValid ? 'border-red-500 dark:border-red-400' : ''}`}
-              placeholder="mi-pagina"
+              placeholder="mi-pagina (dejar vacío para página principal)"
             />
             {!isSlugValid && (
               <p className="text-xs text-red-600 dark:text-red-400 mt-2">
@@ -150,7 +153,7 @@ const PageSettings: React.FC<PageSettingsProps> = ({
               </p>
             )}
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              URL donde será accesible tu página
+              URL donde será accesible tu página. Deja vacío para crear la página principal del sitio.
             </p>
           </div>
 

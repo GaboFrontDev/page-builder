@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import PageBuilder from './components/PageBuilder';
+import { ModernPageBuilder } from './components/ModernComponents';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -34,8 +34,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/builder/:pageId" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
-                <Route path="/builder" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
+                <Route path="/builder/:pageId" element={<ProtectedRoute><ModernPageBuilder /></ProtectedRoute>} />
+                <Route path="/builder" element={<ProtectedRoute><ModernPageBuilder /></ProtectedRoute>} />
               </Routes>
             </div>
           </Router>

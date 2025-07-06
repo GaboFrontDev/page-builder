@@ -9,7 +9,8 @@ async function globalSetup(config: FullConfig) {
   let retries = 10;
   while (retries > 0) {
     try {
-      const response = await page.goto('http://localhost:3001/api/auth/me', { 
+      const backendUrl = process.env.DOCKER_ENV ? 'http://backend:3001' : 'http://localhost:3001';
+      const response = await page.goto(`${backendUrl}/api/auth/me`, { 
         waitUntil: 'networkidle',
         timeout: 10000 
       });
@@ -33,7 +34,8 @@ async function globalSetup(config: FullConfig) {
   retries = 10;
   while (retries > 0) {
     try {
-      const response = await page.goto('http://localhost:3000', { 
+      const frontendUrl = process.env.DOCKER_ENV ? 'http://frontend:3000' : 'http://localhost:3000';
+      const response = await page.goto(frontendUrl, { 
         waitUntil: 'networkidle',
         timeout: 10000 
       });

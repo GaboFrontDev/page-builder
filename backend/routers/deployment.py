@@ -5,12 +5,18 @@ from typing import Dict
 from database import get_db
 from models import Page, User
 from generator import SiteGenerator
+from ssg_generator import ReactSSGGenerator
 from auth import get_current_active_user
+import os
 
 router = APIRouter(prefix="/api/deploy", tags=["deployment"])
 
-# Instancia global del generador
-generator = SiteGenerator()
+# Instancia global del generador - usar React SSG por defecto
+USE_REACT_SSG = os.getenv("USE_REACT_SSG", "true").lower() == "true"
+if USE_REACT_SSG:
+    generator = ReactSSGGenerator()
+else:
+    generator = SiteGenerator()
 
 @router.post("/{page_id}")
 def deploy_page(
@@ -39,7 +45,7 @@ def deploy_page(
             "message": "Deployment started",
             "page_id": page_id,
             "slug": page.slug,
-            "url": f"http://{page.subdomain}.localhost/{page.slug}"
+            "url": f"http://{page.subdomain}.localhost{('/' + page.slug) if page.slug and page.slug != 'root' else ''}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Deployment failed: {str(e)}")
@@ -60,7 +66,7 @@ def deploy_page_by_slug(slug: str, background_tasks: BackgroundTasks, db: Sessio
         return {
             "message": "Deployment started",
             "slug": slug,
-            "url": f"http://{page.subdomain}.localhost/{slug}"
+            "url": f"http://{page.subdomain}.localhost{('/' + slug) if slug and slug != 'root' else ''}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Deployment failed: {str(e)}")
@@ -119,13 +125,19 @@ def deployment_status(slug: str, db: Session = Depends(get_db)):
             "slug": slug
         }
     
-    page_dir = f"/var/www/sites/{page.subdomain}/{slug}"
+    # Para páginas root, verificar en el directorio del subdominio
+    if slug:
+        page_dir = f"/var/www/sites/{page.subdomain}/{slug}"
+        index_path = f"{page_dir}/index.html"
+    else:
+        page_dir = f"/var/www/sites/{page.subdomain}"
+        index_path = f"{page_dir}/index.html"
     
-    if os.path.exists(page_dir) and os.path.exists(f"{page_dir}/index.html"):
+    if os.path.exists(page_dir) and os.path.exists(index_path):
         return {
             "deployed": True,
             "slug": slug,
-            "url": f"http://{page.subdomain}.localhost/{slug}",
+            "url": f"http://{page.subdomain}.localhost{('/' + slug) if slug else ''}",
             "path": page_dir
         }
     else:
@@ -172,18 +184,41 @@ def list_deployed_sites(
         # Buscar el directorio del subdominio
         subdomain_dir = os.path.join(sites_dir, page.subdomain)
         if os.path.exists(subdomain_dir):
-            site_path = os.path.join(subdomain_dir, page.slug)
-            if os.path.isdir(site_path) and os.path.exists(os.path.join(site_path, "index.html")):
-                deployed_sites.append({
-                    "slug": page.slug,
-                    "url": f"http://{page.subdomain}.localhost/{page.slug}",
-                    "path": site_path,
-                    "is_owner": True,
-                    "page_id": page.id,
-                    "title": page.title
-                })
+            if page.slug and page.slug != "root":
+                # Para páginas con slug, buscar en subdirectorio
+                site_path = os.path.join(subdomain_dir, page.slug)
+                if os.path.isdir(site_path) and os.path.exists(os.path.join(site_path, "index.html")):
+                    deployed_sites.append({
+                        "slug": page.slug,
+                        "url": f"http://{page.subdomain}.localhost/{page.slug}",
+                        "path": site_path,
+                        "is_owner": True,
+                        "page_id": page.id,
+                        "title": page.title
+                    })
+            else:
+                # Para páginas root, buscar index.html en el directorio del subdominio
+                index_path = os.path.join(subdomain_dir, "index.html")
+                if os.path.exists(index_path):
+                    deployed_sites.append({
+                        "slug": page.slug,
+                        "url": f"http://{page.subdomain}.localhost",
+                        "path": subdomain_dir,
+                        "is_owner": True,
+                        "page_id": page.id,
+                        "title": page.title
+                    })
     
     return {"deployed_sites": deployed_sites}
+
+@router.get("/generator-info")
+def get_generator_info():
+    """Obtiene información sobre el generador actual"""
+    return {
+        "current_generator": "React SSG" if USE_REACT_SSG else "Classic Jinja2",
+        "use_react_ssg": USE_REACT_SSG,
+        "generator_class": generator.__class__.__name__
+    }
 
 def deploy_page_task(page: Page, db: Session):
     """Tarea background para deployar una página"""

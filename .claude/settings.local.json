@@ -13,7 +13,15 @@
       "Bash(python -m pytest test_main.py -v)",
       "Bash(rm:*)",
       "Bash(npm install)",
-      "Bash(npx playwright:*)"
+      "Bash(npx playwright:*)",
+      "Bash(python -m pytest -v)",
+      "Bash(npm test)",
+      "Bash(python3 -m pytest -v)",
+      "Bash(npm run build:*)",
+      "Bash(python test:*)",
+      "Bash(docker compose:*)",
+      "Bash(cp:*)",
+      "Bash(npm test:*)"
     ],
     "deny": []
   }

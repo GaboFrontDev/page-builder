@@ -23,61 +23,31 @@ export interface AuthResponse {
   expires_in: number;
 }
 
-export interface Page {
-  id: number;
-  title: string;
-  slug: string;
-  subdomain: string;
-  description: string;
+// Import shared types for re-export
+export type { 
+  ComponentData as Component,
+  ComponentType,
+  ComponentContent,
+  ComponentStyles,
+  PageConfig,
+  ThemeName
+} from '../shared';
+
+// Import types for local use
+import type { PageData, PageConfig, ComponentData } from '../shared';
+
+// Frontend-specific extension of PageData
+export interface Page extends Omit<PageData, 'config' | 'components'> {
   config: PageConfig;
   is_published: boolean;
   created_at: string;
   updated_at: string;
   owner_id: number;
-  components?: Component[];
+  components?: ComponentData[];
 }
 
-export interface PageConfig {
-  theme: 'default' | 'dark' | 'modern' | 'minimal';
-  [key: string]: any;
-}
-
-export interface Component {
-  id: number;
-  type: ComponentType;
-  content: ComponentContent;
-  styles: ComponentStyles;
-  position: number;
-  is_visible: boolean;
-  page_id: number;
-}
-
-export type ComponentType = 'header' | 'hero' | 'text' | 'image' | 'button' | 'footer';
-
-export interface ComponentContent {
-  [key: string]: any;
-  // Header
-  title?: string;
-  logo?: string;
-  menu_items?: MenuItem[];
-  // Hero
-  subtitle?: string;
-  cta_text?: string;
-  cta_link?: string;
-  image?: string;
-  // Text
-  text?: string;
-  alignment?: 'left' | 'center' | 'right';
-  // Image
-  src?: string;
-  alt?: string;
-  caption?: string;
-  // Button
-  link?: string;
-  variant?: 'primary' | 'secondary' | 'success' | 'danger';
-  // Footer
-  links?: FooterLink[];
-}
+// Re-export PageData as well
+export type { PageData } from '../shared';
 
 export interface MenuItem {
   text: string;
@@ -87,21 +57,6 @@ export interface MenuItem {
 export interface FooterLink {
   text: string;
   url: string;
-}
-
-export interface ComponentStyles {
-  [key: string]: any;
-  backgroundColor?: string;
-  color?: string;
-  padding?: string;
-  margin?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  borderRadius?: string;
-  border?: string;
-  minHeight?: string;
-  maxWidth?: string;
-  textAlign?: string;
 }
 
 export interface DeploymentResponse {

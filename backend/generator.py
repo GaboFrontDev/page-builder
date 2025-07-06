@@ -8,8 +8,13 @@ from sqlalchemy.orm import Session
 from models import User
 
 class SiteGenerator:
-    def __init__(self, output_dir: str = "/var/www/sites"):
-        self.output_dir = Path(output_dir)
+    def __init__(self, output_dir: str = None):
+        if output_dir is None:
+            # Usar el directorio estándar para nginx
+            self.output_dir = Path("/var/www/sites")
+        else:
+            self.output_dir = Path(output_dir)
+        
         self.templates_dir = Path(__file__).parent / "templates"
         
         # Configurar Jinja2
@@ -200,8 +205,12 @@ class SiteGenerator:
         subdomain_dir.mkdir(parents=True, exist_ok=True)
         
         # Crear directorio para la página dentro del directorio del subdominio
-        page_dir = subdomain_dir / page.slug
-        page_dir.mkdir(parents=True, exist_ok=True)
+        # Para páginas root (slug vacío o "root"), usar el directorio del subdominio directamente
+        if page.slug and page.slug != "root":
+            page_dir = subdomain_dir / page.slug
+            page_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            page_dir = subdomain_dir
         
         # Escribir archivo HTML
         html_file = page_dir / "index.html"
@@ -227,19 +236,35 @@ class SiteGenerator:
         """Elimina una página deployada"""
         if subdomain:
             # Si se proporciona subdomain, buscar en el directorio del subdominio
-            page_dir = self.output_dir / subdomain / slug
+            if slug and slug != "root":
+                page_dir = self.output_dir / subdomain / slug
+            else:
+                # Para páginas root, eliminar el index.html del directorio del subdominio
+                page_dir = self.output_dir / subdomain
+                index_file = page_dir / "index.html"
+                if index_file.exists():
+                    index_file.unlink()
+                    return True
+                return False
         else:
             # Buscar en todos los directorios de subdominios
             page_dir = None
             for subdomain_dir in self.output_dir.iterdir():
                 if subdomain_dir.is_dir():
-                    potential_page_dir = subdomain_dir / slug
-                    if potential_page_dir.exists():
-                        page_dir = potential_page_dir
-                        break
-        
-        if page_dir and page_dir.exists():
-            import shutil
-            shutil.rmtree(page_dir)
-            return True
-        return False
+                    if slug and slug != "root":
+                        potential_page_dir = subdomain_dir / slug
+                        if potential_page_dir.exists():
+                            page_dir = potential_page_dir
+                            break
+                    else:
+                        # Para páginas root, buscar index.html en el directorio del subdominio
+                        index_file = subdomain_dir / "index.html"
+                        if index_file.exists():
+                            index_file.unlink()
+                            return True
+            
+            if page_dir and page_dir.exists():
+                import shutil
+                shutil.rmtree(page_dir)
+                return True
+            return False 

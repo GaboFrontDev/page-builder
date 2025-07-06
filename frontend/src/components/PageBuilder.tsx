@@ -53,7 +53,7 @@ const PageBuilder: React.FC = () => {
       const timestamp = Date.now();
       const newPage = await pagesApi.createPage({
         title: 'Nueva Página',
-        slug: `pagina-${timestamp}`,
+        slug: 'root', // Usar 'root' para páginas root
         subdomain: `sitio-${timestamp}`,
         description: 'Descripción de la página',
         config: { theme: 'default' },
