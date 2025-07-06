@@ -5,6 +5,7 @@ import json
 from typing import Dict, List, Any
 from models import Page, Component
 from sqlalchemy.orm import Session
+from models import User
 
 class SiteGenerator:
     def __init__(self, output_dir: str = "/var/www/sites"):
@@ -48,8 +49,11 @@ class SiteGenerator:
         """Convierte un diccionario de estilos a CSS"""
         css_rules = []
         for key, value in styles.items():
+            # Saltar claves None o vacías
+            if key is None or key == "":
+                continue
             # Convertir camelCase a kebab-case
-            css_key = ''.join(['-' + c.lower() if c.isupper() else c for c in key]).lstrip('-')
+            css_key = ''.join(['-' + c.lower() if c.isupper() else c for c in str(key)]).lstrip('-')
             css_rules.append(f"{css_key}: {value}")
         return "; ".join(css_rules)
     
@@ -191,8 +195,12 @@ class SiteGenerator:
         # Generar HTML
         html_content = self.generate_page(page, db)
         
-        # Crear directorio para la página
-        page_dir = self.output_dir / page.slug
+        # Crear directorio para el subdominio si no existe
+        subdomain_dir = self.output_dir / page.subdomain
+        subdomain_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Crear directorio para la página dentro del directorio del subdominio
+        page_dir = subdomain_dir / page.slug
         page_dir.mkdir(parents=True, exist_ok=True)
         
         # Escribir archivo HTML
@@ -215,10 +223,22 @@ class SiteGenerator:
                 shutil.rmtree(target_assets)
             shutil.copytree(assets_dir, target_assets)
     
-    def delete_page(self, slug: str):
+    def delete_page(self, slug: str, subdomain: str = None):
         """Elimina una página deployada"""
-        page_dir = self.output_dir / slug
-        if page_dir.exists():
+        if subdomain:
+            # Si se proporciona subdomain, buscar en el directorio del subdominio
+            page_dir = self.output_dir / subdomain / slug
+        else:
+            # Buscar en todos los directorios de subdominios
+            page_dir = None
+            for subdomain_dir in self.output_dir.iterdir():
+                if subdomain_dir.is_dir():
+                    potential_page_dir = subdomain_dir / slug
+                    if potential_page_dir.exists():
+                        page_dir = potential_page_dir
+                        break
+        
+        if page_dir and page_dir.exists():
             import shutil
             shutil.rmtree(page_dir)
             return True

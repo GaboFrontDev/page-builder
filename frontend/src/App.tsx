@@ -5,6 +5,8 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import PageBuilder from './components/PageBuilder';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import './App.css';
 
 interface ProtectedRouteProps {
@@ -23,19 +25,23 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/builder/:pageId" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
-            <Route path="/builder" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <Router>
+            <div className="App">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/builder/:pageId" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
+                <Route path="/builder" element={<ProtectedRoute><PageBuilder /></ProtectedRoute>} />
+              </Routes>
+            </div>
+          </Router>
+        </AuthProvider>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 }
 

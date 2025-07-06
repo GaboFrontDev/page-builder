@@ -29,6 +29,7 @@ class TestFullIntegration:
         page_data = {
             "title": "Integration Test Page",
             "slug": "integration-test",
+            "subdomain": "test",
             "description": "A complete integration test",
             "config": {"theme": "modern"},
             "is_published": True
@@ -295,6 +296,7 @@ class TestRealWorldScenarios:
         page_data = {
             "title": "TechCorp - Soluciones Innovadoras",
             "slug": "techcorp-landing",
+            "subdomain": "test",
             "description": "Descubre nuestras soluciones tecnológicas de vanguardia",
             "config": {"theme": "modern"},
             "is_published": True
@@ -429,6 +431,7 @@ class TestRealWorldScenarios:
             page_data = {
                 "title": site["title"],
                 "slug": site["slug"],
+                "subdomain": "test",
                 "description": f"Description for {site['title']}",
                 "config": {"theme": site["theme"]},
                 "is_published": True

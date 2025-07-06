@@ -47,23 +47,38 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
     handleContentChange(field, newArray);
   };
 
+  // Helper function to safely get string values
+  const getStringValue = (value: any): string => {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return value.toString();
+    if (typeof value === 'boolean') return value.toString();
+    if (typeof value === 'object') return '';
+    return String(value);
+  };
+
   const renderHeaderEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">Título</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Título
+        </label>
         <input
           type="text"
-          value={content.title || ''}
+          value={getStringValue(content.title)}
           onChange={(e) => handleContentChange('title', e.target.value)}
           className="form-input"
+          placeholder="Título del sitio"
         />
       </div>
       
       <div>
-        <label className="form-label">Logo URL</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Logo URL
+        </label>
         <input
           type="url"
-          value={content.logo || ''}
+          value={getStringValue(content.logo)}
           onChange={(e) => handleContentChange('logo', e.target.value)}
           className="form-input"
           placeholder="https://ejemplo.com/logo.png"
@@ -71,36 +86,44 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
       
       <div>
-        <label className="form-label">Elementos del Menú</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Elementos del Menú
+        </label>
         {(content.menu_items as any[] || []).map((item, index) => (
-          <div key={index} className="flex gap-2 mb-2">
+          <div key={index} className="flex gap-2 mb-3">
             <input
               type="text"
-              value={item.text || ''}
+              value={getStringValue(item?.text)}
               onChange={(e) => handleArrayFieldChange('menu_items', index, 'text', e.target.value)}
               placeholder="Texto"
               className="form-input flex-1"
             />
             <input
               type="text"
-              value={item.link || ''}
+              value={getStringValue(item?.link)}
               onChange={(e) => handleArrayFieldChange('menu_items', index, 'link', e.target.value)}
               placeholder="Enlace"
               className="form-input flex-1"
             />
             <button
               onClick={() => removeArrayItem('menu_items', index)}
-              className="btn btn-danger text-sm px-2"
+              className="btn btn-danger px-3"
+              title="Eliminar elemento"
             >
-              ×
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
         ))}
         <button
           onClick={() => addArrayItem('menu_items', { text: 'Nuevo', link: '#' })}
-          className="btn btn-secondary text-sm mt-2"
+          className="btn btn-outline w-full"
         >
-          + Agregar elemento
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Agregar elemento
         </button>
       </div>
     </div>
@@ -109,50 +132,64 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   const renderHeroEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">Título Principal</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Título Principal
+        </label>
         <input
           type="text"
-          value={content.title || ''}
+          value={getStringValue(content.title)}
           onChange={(e) => handleContentChange('title', e.target.value)}
           className="form-input"
+          placeholder="Título atractivo"
         />
       </div>
       
       <div>
-        <label className="form-label">Subtítulo</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Subtítulo
+        </label>
         <textarea
-          value={content.subtitle || ''}
+          value={getStringValue(content.subtitle)}
           onChange={(e) => handleContentChange('subtitle', e.target.value)}
           className="form-input"
           rows={3}
+          placeholder="Descripción atractiva de tu producto o servicio"
         />
       </div>
       
       <div>
-        <label className="form-label">Texto del Botón</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Texto del Botón
+        </label>
         <input
           type="text"
-          value={content.cta_text || ''}
+          value={getStringValue(content.cta_text)}
           onChange={(e) => handleContentChange('cta_text', e.target.value)}
           className="form-input"
+          placeholder="Comenzar"
         />
       </div>
       
       <div>
-        <label className="form-label">Enlace del Botón</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Enlace del Botón
+        </label>
         <input
           type="url"
-          value={content.cta_link || ''}
+          value={getStringValue(content.cta_link)}
           onChange={(e) => handleContentChange('cta_link', e.target.value)}
           className="form-input"
+          placeholder="https://ejemplo.com"
         />
       </div>
       
       <div>
-        <label className="form-label">Imagen de Fondo URL</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Imagen de Fondo URL
+        </label>
         <input
           type="url"
-          value={content.image || ''}
+          value={getStringValue(content.image)}
           onChange={(e) => handleContentChange('image', e.target.value)}
           className="form-input"
           placeholder="https://ejemplo.com/imagen.jpg"
@@ -164,9 +201,11 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   const renderTextEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">Contenido (HTML)</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Contenido (HTML)
+        </label>
         <textarea
-          value={content.text || ''}
+          value={getStringValue(content.text)}
           onChange={(e) => handleContentChange('text', e.target.value)}
           className="form-input"
           rows={8}
@@ -175,9 +214,11 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
       
       <div>
-        <label className="form-label">Alineación</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Alineación
+        </label>
         <select
-          value={content.alignment || 'left'}
+          value={getStringValue(content.alignment) || 'left'}
           onChange={(e) => handleContentChange('alignment', e.target.value)}
           className="form-input"
         >
@@ -192,10 +233,12 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   const renderImageEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">URL de la Imagen</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          URL de la Imagen
+        </label>
         <input
           type="url"
-          value={content.src || ''}
+          value={getStringValue(content.src)}
           onChange={(e) => handleContentChange('src', e.target.value)}
           className="form-input"
           placeholder="https://ejemplo.com/imagen.jpg"
@@ -203,22 +246,28 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
       
       <div>
-        <label className="form-label">Texto Alternativo</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Texto Alternativo
+        </label>
         <input
           type="text"
-          value={content.alt || ''}
+          value={getStringValue(content.alt)}
           onChange={(e) => handleContentChange('alt', e.target.value)}
           className="form-input"
+          placeholder="Descripción de la imagen"
         />
       </div>
       
       <div>
-        <label className="form-label">Pie de Imagen</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Caption
+        </label>
         <input
           type="text"
-          value={content.caption || ''}
+          value={getStringValue(content.caption)}
           onChange={(e) => handleContentChange('caption', e.target.value)}
           className="form-input"
+          placeholder="Descripción de la imagen"
         />
       </div>
     </div>
@@ -227,36 +276,43 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   const renderButtonEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">Texto del Botón</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Texto del Botón
+        </label>
         <input
           type="text"
-          value={content.text || ''}
+          value={getStringValue(content.text)}
           onChange={(e) => handleContentChange('text', e.target.value)}
           className="form-input"
+          placeholder="Comenzar"
         />
       </div>
       
       <div>
-        <label className="form-label">Enlace</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Enlace
+        </label>
         <input
           type="url"
-          value={content.link || ''}
+          value={getStringValue(content.link)}
           onChange={(e) => handleContentChange('link', e.target.value)}
           className="form-input"
+          placeholder="https://ejemplo.com"
         />
       </div>
       
       <div>
-        <label className="form-label">Estilo</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Variante
+        </label>
         <select
-          value={content.variant || 'primary'}
+          value={getStringValue(content.variant) || 'primary'}
           onChange={(e) => handleContentChange('variant', e.target.value)}
           className="form-input"
         >
           <option value="primary">Primario</option>
           <option value="secondary">Secundario</option>
-          <option value="success">Éxito</option>
-          <option value="danger">Peligro</option>
+          <option value="outline">Outline</option>
         </select>
       </div>
     </div>
@@ -265,46 +321,57 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   const renderFooterEditor = () => (
     <div className="space-y-4">
       <div>
-        <label className="form-label">Texto del Footer</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Texto del Footer
+        </label>
         <textarea
-          value={content.text || ''}
+          value={getStringValue(content.text)}
           onChange={(e) => handleContentChange('text', e.target.value)}
           className="form-input"
           rows={3}
+          placeholder="© 2024 Mi Sitio Web. Todos los derechos reservados."
         />
       </div>
       
       <div>
-        <label className="form-label">Enlaces</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Enlaces
+        </label>
         {(content.links as any[] || []).map((link, index) => (
-          <div key={index} className="flex gap-2 mb-2">
+          <div key={index} className="flex gap-2 mb-3">
             <input
               type="text"
-              value={link.text || ''}
+              value={getStringValue(link?.text)}
               onChange={(e) => handleArrayFieldChange('links', index, 'text', e.target.value)}
               placeholder="Texto"
               className="form-input flex-1"
             />
             <input
               type="url"
-              value={link.url || ''}
+              value={getStringValue(link?.url)}
               onChange={(e) => handleArrayFieldChange('links', index, 'url', e.target.value)}
               placeholder="URL"
               className="form-input flex-1"
             />
             <button
               onClick={() => removeArrayItem('links', index)}
-              className="btn btn-danger text-sm px-2"
+              className="btn btn-danger px-3"
+              title="Eliminar enlace"
             >
-              ×
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
         ))}
         <button
           onClick={() => addArrayItem('links', { text: 'Nuevo enlace', url: '#' })}
-          className="btn btn-secondary text-sm mt-2"
+          className="btn btn-outline w-full"
         >
-          + Agregar enlace
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Agregar enlace
         </button>
       </div>
     </div>
@@ -330,15 +397,18 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">
+      <div className="flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-slate-700/50">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+          <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
           Editar {component.type}
         </h3>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700"
+          className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -347,44 +417,60 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-6">
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="space-y-8">
           {/* Content Editor */}
           <div>
-            <h4 className="text-md font-medium text-gray-900 mb-3">Contenido</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v14a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v14a4 4 0 004 4h4a4 4 0 001-4V5zM7 5h10" />
+              </svg>
+              Contenido
+            </h4>
             {renderContentEditor()}
           </div>
 
           {/* Styles Editor */}
           <div>
-            <h4 className="text-md font-medium text-gray-900 mb-3">Estilos</h4>
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v14a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v14a4 4 0 004 4h4a4 4 0 001-4V5zM7 5h10" />
+              </svg>
+              Estilos
+            </h4>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="form-label">Color de Fondo</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Color de Fondo
+                  </label>
                   <input
                     type="color"
-                    value={styles.backgroundColor || '#ffffff'}
+                    value={getStringValue(styles.backgroundColor) || '#ffffff'}
                     onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-                    className="form-input h-10"
+                    className="form-input h-10 w-full"
                   />
                 </div>
                 <div>
-                  <label className="form-label">Color de Texto</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Color de Texto
+                  </label>
                   <input
                     type="color"
-                    value={styles.color || '#000000'}
+                    value={getStringValue(styles.color) || '#000000'}
                     onChange={(e) => handleStyleChange('color', e.target.value)}
-                    className="form-input h-10"
+                    className="form-input h-10 w-full"
                   />
                 </div>
               </div>
               
               <div>
-                <label className="form-label">Padding</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Padding
+                </label>
                 <input
                   type="text"
-                  value={styles.padding || ''}
+                  value={getStringValue(styles.padding)}
                   onChange={(e) => handleStyleChange('padding', e.target.value)}
                   className="form-input"
                   placeholder="ej: 20px 40px"
@@ -392,31 +478,37 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
               </div>
               
               <div>
-                <label className="form-label">Margin</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Margin
+                </label>
                 <input
                   type="text"
-                  value={styles.margin || ''}
+                  value={getStringValue(styles.margin)}
                   onChange={(e) => handleStyleChange('margin', e.target.value)}
                   className="form-input"
                   placeholder="ej: 10px 0px"
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="form-label">Tamaño de Fuente</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Tamaño de Fuente
+                  </label>
                   <input
                     type="text"
-                    value={styles.fontSize || ''}
+                    value={getStringValue(styles.fontSize)}
                     onChange={(e) => handleStyleChange('fontSize', e.target.value)}
                     className="form-input"
                     placeholder="ej: 16px"
                   />
                 </div>
                 <div>
-                  <label className="form-label">Peso de Fuente</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Peso de Fuente
+                  </label>
                   <select
-                    value={styles.fontWeight || 'normal'}
+                    value={getStringValue(styles.fontWeight) || 'normal'}
                     onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
                     className="form-input"
                   >
@@ -431,10 +523,12 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
               </div>
               
               <div>
-                <label className="form-label">Border Radius</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Border Radius
+                </label>
                 <input
                   type="text"
-                  value={styles.borderRadius || ''}
+                  value={getStringValue(styles.borderRadius)}
                   onChange={(e) => handleStyleChange('borderRadius', e.target.value)}
                   className="form-input"
                   placeholder="ej: 8px"
@@ -442,10 +536,12 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
               </div>
               
               <div>
-                <label className="form-label">Border</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Border
+                </label>
                 <input
                   type="text"
-                  value={styles.border || ''}
+                  value={getStringValue(styles.border)}
                   onChange={(e) => handleStyleChange('border', e.target.value)}
                   className="form-input"
                   placeholder="ej: 1px solid #ccc"
@@ -457,7 +553,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-6 border-t border-gray-200/50 dark:border-slate-700/50">
         <button
           onClick={() => onDeleteComponent(component.id)}
           className="w-full btn btn-danger"

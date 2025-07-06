@@ -68,6 +68,7 @@ class TestTemplateSystem:
         page.description = "Testing templates"
         page.config = {"theme": "custom"}
         page.slug = "test-template"
+        page.subdomain = "test"
         
         # Mock empty components
         mock_db = Mock()
@@ -90,6 +91,7 @@ class TestTemplateSystem:
             page.description = f"Testing {theme} theme"
             page.config = {"theme": theme}
             page.slug = f"test-{theme}"
+            page.subdomain = "test"
             
             mock_db = Mock()
             mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -110,6 +112,7 @@ class TestTemplateSystem:
         page.description = "Test description"
         page.config = {}
         page.slug = "test-missing"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -133,6 +136,7 @@ class TestThemeSystem:
         page.description = "Testing default theme"
         page.config = {"theme": "default"}
         page.slug = "default-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -151,6 +155,7 @@ class TestThemeSystem:
         page.description = "Testing dark theme"
         page.config = {"theme": "dark"}
         page.slug = "dark-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -168,6 +173,7 @@ class TestThemeSystem:
         page.description = "Testing modern theme"
         page.config = {"theme": "modern"}
         page.slug = "modern-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -186,6 +192,7 @@ class TestThemeSystem:
         page.description = "Testing minimal theme"
         page.config = {"theme": "minimal"}
         page.slug = "minimal-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -203,6 +210,7 @@ class TestThemeSystem:
         page.description = "Testing unknown theme"
         page.config = {"theme": "nonexistent"}
         page.slug = "unknown-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -220,6 +228,7 @@ class TestThemeSystem:
         page.description = "Testing no theme"
         page.config = {}  # Sin tema
         page.slug = "no-theme-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -245,6 +254,7 @@ class TestResponsiveDesign:
         page.description = "Testing responsive design"
         page.config = {"theme": "default"}
         page.slug = "responsive-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -263,6 +273,7 @@ class TestResponsiveDesign:
         page.description = "Testing mobile optimization"
         page.config = {"theme": "default"}
         page.slug = "mobile-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -324,6 +335,7 @@ class TestAssetManagement:
         page.description = "Testing asset copying"
         page.config = {"theme": "default"}
         page.slug = "assets-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -352,6 +364,7 @@ class TestAssetManagement:
         page.description = "Testing without assets"
         page.config = {"theme": "default"}
         page.slug = "no-assets-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -393,6 +406,7 @@ class TestTemplateErrorHandling:
         page.description = "Testing missing template"
         page.config = {"theme": "default"}
         page.slug = "missing-template-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -436,6 +450,7 @@ class TestTemplateErrorHandling:
         page.description = "Testing invalid template syntax"
         page.config = {"theme": "default"}
         page.slug = "invalid-syntax-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -494,6 +509,7 @@ class TestTemplateCustomization:
             "body_class": "custom-page"
         }
         page.slug = "custom-vars-test"
+        page.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -565,6 +581,7 @@ class TestTemplateCustomization:
             "analytics_id": "GA_TRACKING_ID"
         }
         page1.slug = "with-header-footer"
+        page1.subdomain = "test"
         
         mock_db = Mock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -594,6 +611,7 @@ class TestTemplateCustomization:
             "show_footer": False
         }
         page2.slug = "without-header-footer"
+        page2.subdomain = "test"
         
         def custom_render2(**kwargs):
             extra_vars = page2.config.copy()

@@ -44,6 +44,7 @@ def test_create_page():
     page_data = {
         "title": "Test Page",
         "slug": "test-page",
+        "subdomain": "test",
         "description": "A test page",
         "config": {"theme": "default"},
         "is_published": False
@@ -164,6 +165,7 @@ def test_duplicate_slug():
     page_data = {
         "title": "Test Page",
         "slug": "duplicate-slug",
+        "subdomain": "test",
         "description": "A test page",
         "config": {"theme": "default"},
         "is_published": False

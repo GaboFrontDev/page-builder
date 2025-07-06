@@ -27,6 +27,13 @@ class ComponentBase(BaseModel):
 class ComponentCreate(ComponentBase):
     pass
 
+class ComponentUpdate(BaseModel):
+    type: Optional[str] = None
+    content: Optional[Dict[str, Any]] = None
+    styles: Optional[Dict[str, Any]] = None
+    position: Optional[int] = None
+    is_visible: Optional[bool] = None
+
 class Component(ComponentBase):
     id: int
     page_id: int
@@ -38,6 +45,7 @@ class Component(ComponentBase):
 class PageBase(BaseModel):
     title: str
     slug: str
+    subdomain: str
     description: Optional[str] = None
     config: Optional[Dict[str, Any]] = {}
     is_published: bool = False
@@ -47,6 +55,8 @@ class PageCreate(PageBase):
 
 class PageUpdate(BaseModel):
     title: Optional[str] = None
+    slug: Optional[str] = None
+    subdomain: Optional[str] = None
     description: Optional[str] = None
     config: Optional[Dict[str, Any]] = None
     is_published: Optional[bool] = None

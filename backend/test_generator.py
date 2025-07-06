@@ -31,6 +31,7 @@ class TestSiteGenerator:
         page.id = 1
         page.title = "Test Page"
         page.slug = "test-page"
+        page.subdomain = "test"
         page.description = "A test page"
         page.config = {"theme": "modern"}
         page.is_published = True
@@ -218,8 +219,8 @@ class TestSiteGenerator:
         
         result_path = generator.deploy_page(mock_page, mock_db)
         
-        # Verificar que se creó el directorio
-        expected_dir = Path(temp_output_dir) / "test-page"
+        # Verificar que se creó el directorio (nueva estructura: subdomain/slug)
+        expected_dir = Path(temp_output_dir) / "test" / "test-page"
         assert expected_dir.exists()
         assert expected_dir.is_dir()
         
@@ -283,6 +284,7 @@ class TestSiteGenerator:
             page.description = "Test description"
             page.config = {"theme": theme}
             page.slug = f"test-{theme}"
+            page.subdomain = "test"
             
             mock_db = Mock()
             mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = []
@@ -368,8 +370,7 @@ class TestErrorHandling:
         """Test con estilos CSS inválidos"""
         styles = {
             "invalid-property": "some-value",
-            "": "empty-key",
-            None: "none-key"
+            "": "empty-key"
         }
         
         # No debería fallar

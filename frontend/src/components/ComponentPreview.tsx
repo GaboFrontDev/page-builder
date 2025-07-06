@@ -116,7 +116,7 @@ const ComponentPreview: React.FC<ComponentPreviewProps> = ({
           <section className="py-8 px-6">
             <div className="max-w-4xl mx-auto text-center">
               <img
-                src={content.src || 'https://via.placeholder.com/600x400'}
+                src={content.src || 'https://placehold.co/600x400'}
                 alt={content.alt || 'Imagen'}
                 className="w-full h-auto rounded-lg shadow-lg"
               />

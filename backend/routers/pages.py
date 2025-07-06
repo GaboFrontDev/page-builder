@@ -14,22 +14,10 @@ def get_pages(
     skip: int = 0, 
     limit: int = 100, 
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user_optional)
+    current_user: User = Depends(get_current_active_user)
 ):
-    """Obtener páginas (públicas o del usuario si está autenticado)"""
-    query = db.query(Page)
-    
-    if current_user:
-        # Usuario autenticado: ver sus páginas + páginas públicas
-        query = query.filter(
-            (Page.owner_id == current_user.id) | 
-            (Page.is_published == True)
-        )
-    else:
-        # Usuario no autenticado: solo páginas públicas
-        query = query.filter(Page.is_published == True)
-    
-    pages = query.offset(skip).limit(limit).all()
+    """Obtener solo las páginas del usuario autenticado"""
+    pages = db.query(Page).filter(Page.owner_id == current_user.id).offset(skip).limit(limit).all()
     return pages
 
 @router.get("/{page_id}", response_model=PageSchema)
@@ -53,14 +41,15 @@ def create_page(
     current_user: User = Depends(get_current_active_user)
 ):
     """Crear una nueva página (requiere autenticación)"""
-    # Verificar que el slug no exista
-    existing_page = db.query(Page).filter(Page.slug == page.slug).first()
+    # Verificar que la combinación subdomain+slug no exista
+    existing_page = db.query(Page).filter(Page.subdomain == page.subdomain, Page.slug == page.slug).first()
     if existing_page:
-        raise HTTPException(status_code=400, detail="Slug already exists")
+        raise HTTPException(status_code=400, detail="Ya existe una página con ese subdominio y slug")
     
     db_page = Page(
         title=page.title,
         slug=page.slug,
+        subdomain=page.subdomain,
         description=page.description,
         config=page.config,
         is_published=page.is_published,
@@ -86,6 +75,14 @@ def update_page(
     # Verificar que el usuario sea el propietario
     if page.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to edit this page")
+    
+    # Si se está actualizando el slug o subdomain, verificar que la combinación no exista
+    new_slug = page_update.slug if page_update.slug else page.slug
+    new_subdomain = page_update.subdomain if page_update.subdomain else page.subdomain
+    if (new_slug != page.slug or new_subdomain != page.subdomain):
+        existing_page = db.query(Page).filter(Page.subdomain == new_subdomain, Page.slug == new_slug).first()
+        if existing_page and existing_page.id != page.id:
+            raise HTTPException(status_code=400, detail="Ya existe una página con ese subdominio y slug")
     
     for field, value in page_update.dict(exclude_unset=True).items():
         setattr(page, field, value)
@@ -113,7 +110,7 @@ def delete_page(
     db.commit()
     return {"message": "Page deleted successfully"}
 
-@router.post("/{page_id}/publish")
+@router.post("/{page_id}/publish", response_model=PageSchema)
 def publish_page(
     page_id: int, 
     db: Session = Depends(get_db),
@@ -131,4 +128,4 @@ def publish_page(
     page.is_published = True
     db.commit()
     db.refresh(page)
-    return {"message": "Page published successfully", "page": page}
+    return page

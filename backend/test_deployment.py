@@ -43,6 +43,7 @@ class TestDeploymentEndpoints:
         page.slug = "published-page"
         page.description = "A published test page"
         page.is_published = True
+        page.subdomain = "test"
         return page
     
     @pytest.fixture
@@ -54,6 +55,7 @@ class TestDeploymentEndpoints:
         page.slug = "unpublished-page"
         page.description = "An unpublished test page"
         page.is_published = False
+        page.subdomain = "test"
         return page
     
     def test_deploy_published_page_success(self, client):
@@ -67,6 +69,7 @@ class TestDeploymentEndpoints:
             mock_page.id = 1
             mock_page.slug = "test-page"
             mock_page.is_published = True
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             response = client.post("/api/deploy/1")
@@ -88,6 +91,7 @@ class TestDeploymentEndpoints:
             mock_page = Mock()
             mock_page.id = 2
             mock_page.is_published = False
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             response = client.post("/api/deploy/2")
@@ -119,6 +123,7 @@ class TestDeploymentEndpoints:
             mock_page = Mock()
             mock_page.slug = "test-slug"
             mock_page.is_published = True
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             response = client.post("/api/deploy/slug/test-slug")
@@ -141,6 +146,7 @@ class TestDeploymentEndpoints:
             mock_page = Mock()
             mock_page.id = 1
             mock_page.slug = "test-page"
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             # Mock successful deletion
@@ -165,6 +171,7 @@ class TestDeploymentEndpoints:
             mock_page = Mock()
             mock_page.id = 1
             mock_page.slug = "test-page"
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             # Mock deletion returns False (not deployed)
@@ -227,9 +234,11 @@ class TestDeploymentEndpoints:
             mock_page1 = Mock()
             mock_page1.id = 1
             mock_page1.slug = "page-1"
+            mock_page1.subdomain = "test"
             mock_page2 = Mock()
             mock_page2.id = 2
             mock_page2.slug = "page-2"
+            mock_page2.subdomain = "test"
             
             mock_db.query.return_value.filter.return_value.all.return_value = [mock_page1, mock_page2]
             
@@ -303,6 +312,7 @@ class TestBackgroundDeploymentTask:
         page.slug = "test-page"
         page.description = "Test description"
         page.config = {"theme": "default"}
+        page.subdomain = "test"
         
         # Mock components
         component = Mock(spec=Component)
@@ -402,6 +412,7 @@ class TestDeploymentIntegration:
             mock_page.id = 1
             mock_page.slug = "test-page"
             mock_page.is_published = True
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             # 1. Deploy page
@@ -458,6 +469,7 @@ class TestDeploymentErrorHandling:
             mock_page = Mock()
             mock_page.id = 1
             mock_page.is_published = True
+            mock_page.subdomain = "test"
             mock_db.query.return_value.filter.return_value.first.return_value = mock_page
             
             # Mock generator error in background task

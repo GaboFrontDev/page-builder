@@ -453,6 +453,7 @@ class TestProtectedEndpoints:
         page_data = {
             "title": "Página Autenticada",
             "slug": "pagina-autenticada",
+            "subdomain": "test",
             "description": "Una página creada con autenticación",
             "config": {"theme": "modern"},
             "is_published": True
@@ -490,6 +491,7 @@ class TestProtectedEndpoints:
         page_data = {
             "title": "Página Original",
             "slug": "pagina-original",
+            "subdomain": "test",
             "description": "Descripción original",
             "config": {"theme": "default"},
             "is_published": False
@@ -556,6 +558,7 @@ class TestProtectedEndpoints:
         page_data = {
             "title": "Página a Eliminar",
             "slug": "pagina-a-eliminar",
+            "subdomain": "test",
             "description": "Esta será eliminada",
             "config": {"theme": "default"},
             "is_published": False

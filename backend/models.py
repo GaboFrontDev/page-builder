@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, JSON, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -22,7 +22,8 @@ class Page(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    slug = Column(String, unique=True, index=True)
+    slug = Column(String, index=True)  # Ya no es único por sí solo
+    subdomain = Column(String, index=True)  # Ya no es único por sí solo
     description = Column(Text)
     config = Column(JSON)  # Configuración completa de la página
     is_published = Column(Boolean, default=False)
@@ -32,6 +33,11 @@ class Page(Base):
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     owner = relationship("User", back_populates="pages")
     components = relationship("Component", back_populates="page")
+
+    __table_args__ = (
+        # Índice único compuesto
+        UniqueConstraint('subdomain', 'slug', name='uq_subdomain_slug'),
+    )
 
 class Component(Base):
     __tablename__ = "components"

@@ -27,6 +27,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  subdomain: string;
   description: string;
   config: PageConfig;
   is_published: boolean;
@@ -115,6 +116,19 @@ export interface DeploymentStatus {
   slug: string;
   url?: string;
   path?: string;
+}
+
+export interface DeployedSite {
+  slug: string;
+  url: string;
+  path: string;
+  is_owner: boolean;
+  page_id?: number;
+  title?: string;
+}
+
+export interface DeployedSitesResponse {
+  deployed_sites: DeployedSite[];
 }
 
 export interface ApiError {

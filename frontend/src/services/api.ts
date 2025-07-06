@@ -8,6 +8,7 @@ import {
   Component, 
   DeploymentResponse, 
   DeploymentStatus,
+  DeployedSitesResponse,
   ApiError 
 } from '../types';
 
@@ -119,7 +120,7 @@ export const pagesApi = {
 // Components API
 export const componentsApi = {
   getComponents: async (pageId: number): Promise<Component[]> => {
-    const response = await apiClient.get(`/api/components/?page_id=${pageId}`);
+    const response = await apiClient.get(`/api/components/page/${pageId}`);
     return response.data;
   },
 
@@ -167,8 +168,17 @@ export const deploymentApi = {
     await apiClient.delete(`/api/deploy/${pageId}`);
   },
 
-  listDeployedSites: async (): Promise<{ deployed_sites: Array<{ slug: string; url: string; path: string }> }> => {
+  undeployPageBySlug: async (slug: string): Promise<void> => {
+    await apiClient.delete(`/api/deploy/slug/${slug}`);
+  },
+
+  listDeployedSites: async (): Promise<DeployedSitesResponse> => {
     const response = await apiClient.get('/api/deploy/list');
+    return response.data;
+  },
+
+  rebuildAllSites: async (): Promise<{ message: string; pages: Array<{ id: number; slug: string }> }> => {
+    const response = await apiClient.post('/api/deploy/rebuild-all');
     return response.data;
   },
 };
