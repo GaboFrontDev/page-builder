@@ -62,6 +62,46 @@ class SiteGenerator:
             css_rules.append(f"{css_key}: {value}")
         return "; ".join(css_rules)
     
+    def _convert_styles_to_tailwind(self, styles: str) -> str:
+        """Convierte estilos CSS a clases de Tailwind"""
+        if not styles:
+            return ""
+        
+        # Mapeo básico de estilos CSS a clases de Tailwind
+        style_mappings = {
+            "background-color: #007bff": "bg-primary",
+            "background-color: #6c757d": "bg-secondary",
+            "background-color: #28a745": "bg-success",
+            "background-color: #dc3545": "bg-danger",
+            "color: white": "text-white",
+            "color: #333": "text-gray-900",
+            "color: #666": "text-gray-600",
+            "text-align: center": "text-center",
+            "text-align: left": "text-left",
+            "text-align: right": "text-right",
+            "padding: 20px": "p-5",
+            "padding: 40px 20px": "py-10 px-5",
+            "margin-bottom: 20px": "mb-5",
+            "margin-top: 20px": "mt-5",
+            "font-weight: bold": "font-bold",
+            "font-size: 1.5rem": "text-2xl",
+            "font-size: 3rem": "text-5xl",
+            "font-size: 1.2rem": "text-xl",
+            "border-radius: 5px": "rounded",
+            "border-radius: 8px": "rounded-lg",
+            "display: flex": "flex",
+            "justify-content: space-between": "justify-between",
+            "align-items: center": "items-center",
+        }
+        
+        tailwind_classes = []
+        for css_style in styles.split(";"):
+            css_style = css_style.strip()
+            if css_style in style_mappings:
+                tailwind_classes.append(style_mappings[css_style])
+        
+        return " ".join(tailwind_classes)
+    
     def _generate_hero(self, content: Dict, styles: str) -> str:
         title = content.get("title", "")
         subtitle = content.get("subtitle", "")
@@ -69,12 +109,15 @@ class SiteGenerator:
         cta_text = content.get("cta_text", "")
         cta_link = content.get("cta_link", "#")
         
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        
         html = f'''
-        <section class="hero" style="text-align: center; padding: 80px 20px; {styles}">
-            {f'<img src="{image}" alt="Hero" style="max-width: 100%; height: auto; margin-bottom: 30px;">' if image else ''}
-            <h1 style="font-size: 3rem; margin-bottom: 20px; color: #333;">{title}</h1>
-            <p style="font-size: 1.2rem; margin-bottom: 30px; color: #666;">{subtitle}</p>
-            {f'<a href="{cta_link}" style="background: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">{cta_text}</a>' if cta_text else ''}
+        <section class="hero text-center py-20 px-4 {tailwind_classes}">
+            {f'<img src="{image}" alt="Hero" class="max-w-full h-auto mb-8 rounded-lg">' if image else ''}
+            <h1 class="text-5xl font-bold mb-6 text-gray-900 dark:text-white">{title}</h1>
+            <p class="text-xl mb-8 text-gray-600 dark:text-gray-300">{subtitle}</p>
+            {f'<a href="{cta_link}" class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-semibold inline-block transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg">{cta_text}</a>' if cta_text else ''}
         </section>
         '''
         return html
@@ -83,9 +126,13 @@ class SiteGenerator:
         text = content.get("text", "")
         alignment = content.get("alignment", "left")
         
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        alignment_class = "text-center" if alignment == "center" else "text-left" if alignment == "left" else "text-right"
+        
         html = f'''
-        <section class="text-section" style="padding: 40px 20px; text-align: {alignment}; {styles}">
-            <div style="max-width: 800px; margin: 0 auto;">
+        <section class="text-section py-10 px-5 {alignment_class} {tailwind_classes}">
+            <div class="max-w-4xl mx-auto">
                 {text}
             </div>
         </section>
@@ -97,10 +144,13 @@ class SiteGenerator:
         alt = content.get("alt", "")
         caption = content.get("caption", "")
         
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        
         html = f'''
-        <section class="image-section" style="padding: 40px 20px; text-align: center; {styles}">
-            <img src="{src}" alt="{alt}" style="max-width: 100%; height: auto; border-radius: 8px;">
-            {f'<p style="margin-top: 15px; font-style: italic; color: #666;">{caption}</p>' if caption else ''}
+        <section class="image-section py-10 px-5 text-center {tailwind_classes}">
+            <img src="{src}" alt="{alt}" class="max-w-full h-auto rounded-lg shadow-lg">
+            {f'<p class="mt-4 italic text-gray-600 dark:text-gray-400">{caption}</p>' if caption else ''}
         </section>
         '''
         return html
@@ -110,15 +160,19 @@ class SiteGenerator:
         link = content.get("link", "#")
         variant = content.get("variant", "primary")
         
-        button_styles = {
-            "primary": "background: #007bff; color: white;",
-            "secondary": "background: #6c757d; color: white;",
-            "outline": "background: transparent; color: #007bff; border: 2px solid #007bff;"
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        
+        # Clases de botón según variante
+        button_classes = {
+            "primary": "bg-primary hover:bg-primary/90 text-white",
+            "secondary": "bg-secondary hover:bg-secondary/90 text-white",
+            "outline": "bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-white"
         }
         
         html = f'''
-        <section class="button-section" style="padding: 20px; text-align: center; {styles}">
-            <a href="{link}" style="{button_styles.get(variant, button_styles['primary'])} padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+        <section class="button-section p-5 text-center {tailwind_classes}">
+            <a href="{link}" class="{button_classes.get(variant, button_classes['primary'])} px-8 py-4 rounded-lg font-semibold inline-block transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg">
                 {text}
             </a>
         </section>
@@ -130,18 +184,21 @@ class SiteGenerator:
         logo = content.get("logo", "")
         menu_items = content.get("menu_items", [])
         
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        
         menu_html = ""
         if menu_items:
-            menu_html = "<nav style='display: inline-block;'>"
+            menu_html = '<nav class="inline-block">'
             for item in menu_items:
-                menu_html += f'<a href="{item.get("link", "#")}" style="margin-left: 20px; text-decoration: none; color: #333;">{item.get("text", "")}</a>'
+                menu_html += f'<a href="{item.get("link", "#")}" class="ml-5 text-gray-900 dark:text-white hover:text-primary transition-colors duration-200">{item.get("text", "")}</a>'
             menu_html += "</nav>"
         
         html = f'''
-        <header style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; {styles}">
-            <div style="display: flex; align-items: center;">
-                {f'<img src="{logo}" alt="Logo" style="height: 40px; margin-right: 15px;">' if logo else ''}
-                <h1 style="margin: 0; font-size: 1.5rem;">{title}</h1>
+        <header class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center {tailwind_classes}">
+            <div class="flex items-center">
+                {f'<img src="{logo}" alt="Logo" class="h-10 mr-4">' if logo else ''}
+                <h1 class="m-0 text-2xl font-bold text-gray-900 dark:text-white">{title}</h1>
             </div>
             {menu_html}
         </header>
@@ -152,16 +209,19 @@ class SiteGenerator:
         text = content.get("text", "")
         links = content.get("links", [])
         
+        # Convertir estilos a clases de Tailwind
+        tailwind_classes = self._convert_styles_to_tailwind(styles)
+        
         links_html = ""
         if links:
-            links_html = "<div style='margin-top: 20px;'>"
+            links_html = '<div class="mt-5">'
             for link in links:
-                links_html += f'<a href="{link.get("url", "#")}" style="margin-right: 20px; text-decoration: none; color: #666;">{link.get("text", "")}</a>'
+                links_html += f'<a href="{link.get("url", "#")}" class="mr-5 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors duration-200">{link.get("text", "")}</a>'
             links_html += "</div>"
         
         html = f'''
-        <footer style="padding: 40px 20px; text-align: center; border-top: 1px solid #eee; margin-top: 40px; {styles}">
-            <p style="margin: 0; color: #666;">{text}</p>
+        <footer class="py-10 px-5 text-center border-t border-gray-200 dark:border-gray-700 mt-10 {tailwind_classes}">
+            <p class="m-0 text-gray-600 dark:text-gray-400">{text}</p>
             {links_html}
         </footer>
         '''

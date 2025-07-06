@@ -234,7 +234,7 @@ const ModernPageBuilder: React.FC = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error || 'Error al cargar la página'}</p>
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/')}
             className="btn btn-primary"
           >
             Volver al Dashboard
@@ -253,8 +253,9 @@ const ModernPageBuilder: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/')}
               className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+              title="Volver al Dashboard"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
