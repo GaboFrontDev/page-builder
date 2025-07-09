@@ -134,18 +134,22 @@ async def create_checkout_session(
 ):
     """Crear sesión de checkout de Stripe"""
     try:
-        price_id = request.get("price_id")
         plan_type = request.get("plan_type")
-        
-        if not price_id or not plan_type:
-            raise HTTPException(status_code=400, detail="price_id y plan_type son requeridos")
-        
+        if not plan_type:
+            raise HTTPException(status_code=400, detail="plan_type es requerido")
+
+        from stripe_module.infrastructure.config.stripe_config import StripeConfig
+        config = StripeConfig()
+        price_id = config.get_price_id(plan_type)
+        if not price_id:
+            raise HTTPException(status_code=400, detail=f"No existe price_id para el plan {plan_type}")
+
         # Crear o obtener customer
         customer = await stripe_integration.create_customer_with_events(
             email=current_user.email,
             name=current_user.username
         )
-        
+
         # Crear checkout session
         session = await stripe_integration.create_checkout_session(
             customer_id=customer.stripe_customer_id,
@@ -154,12 +158,12 @@ async def create_checkout_session(
             success_url="http://localhost:3000/dashboard?success=true",
             cancel_url="http://localhost:3000/subscription?canceled=true"
         )
-        
+
         return {
             "session_url": session.url,
             "session_id": session.id
         }
-        
+
     except Exception as e:
         logger.error(f"Error creando checkout session: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -178,28 +182,43 @@ async def verify_payment(
         config = StripeConfig()
         stripe.api_key = config.stripe_secret_key
         
+        logger.info(f"Verificando pago para sesión: {session_id}")
+        
         # Obtener la sesión de Stripe
         session = stripe.checkout.Session.retrieve(session_id)
         
-        if session.payment_status == 'paid':
+        logger.info(f"Estado de la sesión: payment_status={session.payment_status}, status={session.status}")
+        
+        if session.payment_status == 'paid' and session.status == 'complete':
             # Actualizar usuario
             current_user.subscription_active = True
             current_user.stripe_customer_id = session.customer
             db.commit()
             
+            logger.info(f"Usuario {current_user.email} suscripción activada exitosamente")
+            
             return {
                 "success": True,
-                "message": "Suscripción activada exitosamente"
+                "message": "Suscripción activada exitosamente",
+                "session_status": session.status,
+                "payment_status": session.payment_status
             }
         else:
+            logger.warning(f"Sesión {session_id} no completada: payment_status={session.payment_status}, status={session.status}")
+            
             return {
                 "success": False,
-                "message": "Pago no completado"
+                "message": f"Pago no completado. Estado: {session.payment_status}, Status: {session.status}",
+                "session_status": session.status,
+                "payment_status": session.payment_status
             }
             
+    except stripe.error.InvalidRequestError as e:
+        logger.error(f"Error de Stripe (sesión inválida): {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Sesión de pago inválida: {str(e)}")
     except Exception as e:
         logger.error(f"Error verificando pago: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
 
 @router.post("/webhook")
 async def handle_stripe_webhook(

@@ -31,25 +31,44 @@ const Dashboard: React.FC = () => {
     const sessionId = urlParams.get('session_id');
     const success = urlParams.get('success');
     
+    console.log('Checking payment success:', { sessionId, success });
+    
     if (sessionId && success === 'true') {
       try {
+        console.log('Verifying payment for session:', sessionId);
+        
         const response = await fetch(`/api/subscription/verify-payment/${sessionId}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'application/json'
           }
         });
         
+        console.log('Payment verification response status:', response.status);
+        
         if (response.ok) {
           const result = await response.json();
+          console.log('Payment verification result:', result);
+          
           if (result.success) {
-            showNotification('success', '¡Suscripción activada exitosamente!');
+            showNotification('success', '¡Suscripción activada exitosamente! 🎉');
             // Limpiar URL
-            window.history.replaceState({}, document.title, '/');
+            window.history.replaceState({}, document.title, '/dashboard');
+          } else {
+            showNotification('warning', result.message || 'El pago no se completó correctamente');
           }
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Payment verification failed:', errorData);
+          showNotification('error', 'Error verificando el pago. Por favor, contacta soporte.');
         }
       } catch (error) {
         console.error('Error verificando pago:', error);
+        showNotification('error', 'Error de conexión al verificar el pago');
       }
+    } else if (success === 'true' && !sessionId) {
+      // Caso donde success=true pero no hay session_id
+      showNotification('warning', 'Pago completado, pero no se pudo verificar el estado');
     }
   };
 

@@ -25,7 +25,7 @@ export const getDefaultContent = (type: ComponentType): ComponentContent => {
       };
     case 'image':
       return {
-        src: 'https://via.placeholder.com/600x300',
+        src: 'https://placehold.co/600x400',
         alt: 'Imagen de ejemplo',
         caption: 'Descripción de la imagen'
       };

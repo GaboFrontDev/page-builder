@@ -5,8 +5,10 @@ from models import Base
 from routers import pages, components, deployment, auth, subscription
 from subscription_manager import setup_subscription_manager
 import uvicorn
+from stripe_module.infrastructure.models.subscription_models import Base as StripeBase
 
 Base.metadata.create_all(bind=engine)
+StripeBase.metadata.create_all(bind=engine)
 
 # Inicializar el sistema de gestión de suscripciones
 try:

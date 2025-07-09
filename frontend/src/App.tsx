@@ -36,6 +36,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/subscription" element={<SubscriptionLanding />} />
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/builder/:pageId" element={<ProtectedRoute><ModernPageBuilder /></ProtectedRoute>} />
                 <Route path="/builder" element={<ProtectedRoute><ModernPageBuilder /></ProtectedRoute>} />
               </Routes>
