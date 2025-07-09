@@ -2,7 +2,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Component } from '../types';
-import { ComponentRenderer } from '../shared';
+import { ComponentRenderer } from '@shared/index';
 
 interface SharedComponentPreviewProps {
   component: Component;

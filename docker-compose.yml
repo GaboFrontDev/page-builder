@@ -67,6 +67,7 @@ services:
     volumes:
       - ./backend:/app
       - ./generated-sites:/var/www/sites
+      - ./shared:/app/shared
 
   # Frontend Builder
   frontend:
@@ -78,6 +79,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - ./shared:/app/shared
     command: npm run dev -- --host 0.0.0.0
 
   # Nginx reverse proxy

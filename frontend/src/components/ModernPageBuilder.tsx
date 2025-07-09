@@ -4,7 +4,7 @@ import { Page, Component } from '../types';
 import { pagesApi, componentsApi, deploymentApi, handleApiError } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
-import { componentTypes, getDefaultContent, getDefaultStyles } from '../shared/utils/componentDefaults';
+import { componentTypes, getDefaultContent, getDefaultStyles } from '@shared/utils/componentDefaults';
 import ComponentSidebar from './ComponentSidebar';
 import SharedComponentPreview from './SharedComponentPreview';
 import ModernComponentEditor from './ModernComponentEditor';

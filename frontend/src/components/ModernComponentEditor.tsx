@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Component, ComponentContent, ComponentStyles } from '../types';
-import { getDefaultContent, getDefaultStyles, componentLabels } from '../shared/utils/componentDefaults';
-import { ComponentRenderer } from '../shared';
+import { getDefaultContent, getDefaultStyles, componentLabels } from '@shared/utils/componentDefaults';
+import { ComponentRenderer } from '@shared/index';
 
 interface ModernComponentEditorProps {
   component: Component;
@@ -347,6 +347,7 @@ const ModernComponentEditor: React.FC<ModernComponentEditorProps> = ({
               Restaurar
             </button>
             <button
+              title="Cerrar"
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
             >
@@ -361,6 +362,7 @@ const ModernComponentEditor: React.FC<ModernComponentEditorProps> = ({
         <div className="flex border-b border-gray-200 dark:border-gray-700">
           {['content', 'styles', 'preview'].map((tab) => (
             <button
+              title={tab}
               key={tab}
               onClick={() => setActiveTab(tab as any)}
               className={`px-6 py-3 text-sm font-medium capitalize transition-colors ${
@@ -394,12 +396,14 @@ const ModernComponentEditor: React.FC<ModernComponentEditorProps> = ({
         {/* Footer */}
         <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
           <button
+            title="Eliminar componente"
             onClick={() => onDeleteComponent(component.id)}
             className="px-4 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors"
           >
             Eliminar componente
           </button>
           <button
+            title="Guardar cambios"
             onClick={onClose}
             className="btn btn-primary"
           >
@@ -454,6 +458,7 @@ const SelectField: React.FC<SelectFieldProps> = ({ label, value, onChange, optio
       {label}
     </label>
     <select
+      title={label}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="form-input"
@@ -505,6 +510,7 @@ const ArrayField: React.FC<ArrayFieldProps> = ({
         <div key={index} className="flex gap-2 mb-3">
           {renderItem(item, index, (newItem) => updateItem(index, newItem))}
           <button
+            title="Eliminar"
             onClick={() => removeItem(index)}
             className="px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
           >
@@ -515,6 +521,7 @@ const ArrayField: React.FC<ArrayFieldProps> = ({
         </div>
       ))}
       <button
+        title="Agregar"
         onClick={addItem}
         className="btn btn-secondary text-sm"
       >

@@ -31,10 +31,10 @@ export type {
   ComponentStyles,
   PageConfig,
   ThemeName
-} from '../shared';
+} from '@shared/index';
 
 // Import types for local use
-import type { PageData, PageConfig, ComponentData } from '../shared';
+import type { PageData, PageConfig, ComponentData } from '@shared/index';
 
 // Frontend-specific extension of PageData
 export interface Page extends Omit<PageData, 'config' | 'components'> {
@@ -47,7 +47,7 @@ export interface Page extends Omit<PageData, 'config' | 'components'> {
 }
 
 // Re-export PageData as well
-export type { PageData } from '../shared';
+export type { PageData } from '@shared/index';
 
 export interface MenuItem {
   text: string;

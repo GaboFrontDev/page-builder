@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@shared': resolve(__dirname, '../../shared')
+      '@shared': resolve(__dirname, '../shared')
     }
   },
   build: {
@@ -20,7 +20,8 @@ export default defineConfig({
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]'
-      }
+      },
+      external: ['framer-motion']
     }
   },
   define: {
