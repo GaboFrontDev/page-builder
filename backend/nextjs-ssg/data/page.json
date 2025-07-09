@@ -1,0 +1,36 @@
+{
+  "id": 1,
+  "title": "Demo Landing Page",
+  "description": "Generated with Next.js SSG",
+  "slug": "demo",
+  "subdomain": "demo",
+  "config": {
+    "theme": "modern"
+  },
+  "components": [
+    {
+      "id": 1,
+      "type": "hero",
+      "content": {
+        "title": "Welcome to Next.js SSG",
+        "subtitle": "Better performance and class handling",
+        "cta_text": "Get Started",
+        "cta_link": "#"
+      },
+      "styles": {},
+      "position": 1,
+      "is_visible": true
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "content": {
+        "text": "<h2>Why Next.js?</h2><p>Next.js provides better optimization for CSS classes and static generation.</p>",
+        "alignment": "center"
+      },
+      "styles": {},
+      "position": 2,
+      "is_visible": true
+    }
+  ]
+}

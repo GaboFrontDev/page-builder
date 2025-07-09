@@ -5,7 +5,7 @@ from typing import Dict
 from database import get_db
 from models import Page, User
 from generator import SiteGenerator
-from ssg_generator import ReactSSGGenerator
+from nextjs_ssg_generator import NextJSSSGGenerator
 from auth import get_current_active_user
 import os
 
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/deploy", tags=["deployment"])
 # Instancia global del generador - usar React SSG por defecto
 USE_REACT_SSG = os.getenv("USE_REACT_SSG", "true").lower() == "true"
 if USE_REACT_SSG:
-    generator = ReactSSGGenerator()
+    generator = NextJSSSGGenerator()
 else:
     generator = SiteGenerator()
 
@@ -215,7 +215,7 @@ def list_deployed_sites(
 def get_generator_info():
     """Obtiene información sobre el generador actual"""
     return {
-        "current_generator": "React SSG" if USE_REACT_SSG else "Classic Jinja2",
+        "current_generator": "Next.js SSG" if USE_REACT_SSG else "Classic Jinja2",
         "use_react_ssg": USE_REACT_SSG,
         "generator_class": generator.__class__.__name__
     }

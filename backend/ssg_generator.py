@@ -1,10 +1,13 @@
 import json
 import subprocess
 import tempfile
+import logging
 from pathlib import Path
 from typing import Dict, List, Any
 from models import Page, Component
 from sqlalchemy.orm import Session
+
+logger = logging.getLogger(__name__)
 
 class ReactSSGGenerator:
     def __init__(self, output_dir: str = None):
@@ -19,8 +22,27 @@ class ReactSSGGenerator:
     def _ensure_ssg_built(self):
         """Ensure the SSG system is built"""
         dist_dir = self.ssg_dir / "dist"
-        if not dist_dir.exists():
+        if not dist_dir.exists() or not self._verify_build():
+            logger.info("Building SSG system...")
             subprocess.run(["npm", "run", "build"], cwd=self.ssg_dir, check=True)
+            
+            if not self._verify_build():
+                raise RuntimeError("SSG build verification failed after build")
+    
+    def _verify_build(self):
+        """Verify that the build completed successfully"""
+        dist_dir = self.ssg_dir / "dist" / "assets"
+        required_files = ["style.css", "main.js"]
+        
+        for file in required_files:
+            file_path = dist_dir / file
+            if not file_path.exists():
+                logger.error(f"Required asset {file} not found at {file_path}")
+                return False
+            if file_path.stat().st_size == 0:
+                logger.error(f"Required asset {file} is empty")
+                return False
+        return True
     
     def _prepare_page_data(self, page: Page, db: Session) -> Dict[str, Any]:
         """Convert database models to JSON serializable format"""
@@ -106,39 +128,75 @@ console.log(html);
     
     def deploy_page(self, page: Page, db: Session) -> str:
         """Generate and deploy a page using React SSG"""
-        # Generate HTML
-        html_content = self.generate_page(page, db)
-        
-        # Create directory for the subdomain if not exists
-        subdomain_dir = self.output_dir / page.subdomain
-        subdomain_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Create directory for the page within the subdomain directory
-        if page.slug and page.slug != "root":
-            page_dir = subdomain_dir / page.slug
-            page_dir.mkdir(parents=True, exist_ok=True)
-        else:
-            page_dir = subdomain_dir
-        
-        # Write HTML file
-        html_file = page_dir / "index.html"
-        with open(html_file, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        
-        # Copy assets if they exist
-        self._copy_assets(page_dir)
-        
-        return str(page_dir)
+        try:
+            # Ensure SSG is built with fresh assets before deployment
+            self._ensure_ssg_built()
+            
+            # Generate HTML
+            html_content = self.generate_page(page, db)
+            
+            # Create directory for the subdomain if not exists
+            subdomain_dir = self.output_dir / page.subdomain
+            subdomain_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Create directory for the page within the subdomain directory
+            if page.slug and page.slug != "root":
+                page_dir = subdomain_dir / page.slug
+                page_dir.mkdir(parents=True, exist_ok=True)
+            else:
+                page_dir = subdomain_dir
+            
+            # Write HTML file
+            html_file = page_dir / "index.html"
+            with open(html_file, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+            
+            # Copy assets and verify
+            self._copy_assets(page_dir)
+            
+            if not self._verify_assets_copied(page_dir):
+                raise RuntimeError("Asset copy verification failed")
+                
+            logger.info(f"Successfully deployed page {page.slug} to {page_dir}")
+            return str(page_dir)
+            
+        except Exception as e:
+            logger.error(f"Deployment failed for page {page.slug}: {e}")
+            raise RuntimeError(f"Deployment failed: {e}")
     
     def _copy_assets(self, target_dir: Path):
         """Copy assets from the SSG build"""
         ssg_assets = self.ssg_dir / "dist" / "assets"
-        if ssg_assets.exists():
-            import shutil
-            target_assets = target_dir / "assets"
+        if not ssg_assets.exists():
+            raise FileNotFoundError(f"SSG assets not found at {ssg_assets}")
+        
+        import shutil
+        target_assets = target_dir / "assets"
+        try:
             if target_assets.exists():
                 shutil.rmtree(target_assets)
             shutil.copytree(ssg_assets, target_assets)
+            logger.info(f"Assets copied from {ssg_assets} to {target_assets}")
+            
+        except Exception as e:
+            raise RuntimeError(f"Failed to copy assets: {e}")
+    
+    def _verify_assets_copied(self, target_dir: Path):
+        """Verify assets were copied correctly"""
+        target_assets = target_dir / "assets"
+        source_assets = self.ssg_dir / "dist" / "assets"
+        
+        for asset in ["style.css", "main.js"]:
+            source_file = source_assets / asset
+            target_file = target_assets / asset
+            
+            if not target_file.exists():
+                logger.error(f"Asset {asset} not found at {target_file}")
+                return False
+            if source_file.stat().st_size != target_file.stat().st_size:
+                logger.error(f"Asset {asset} size mismatch: source={source_file.stat().st_size}, target={target_file.stat().st_size}")
+                return False
+        return True
     
     def delete_page(self, slug: str, subdomain: str = None):
         """Delete a deployed page"""

@@ -6,16 +6,16 @@ Test script for the new React SSG system
 import json
 import sys
 from pathlib import Path
-from ssg_generator import ReactSSGGenerator
+from nextjs_ssg_generator import NextJSSSGGenerator
 
 def test_ssg_system():
-    """Test the React SSG system with sample data"""
+    """Test the Next.js SSG system with sample data"""
     
     # Sample page data that would normally come from the database
     sample_page_data = {
         "id": 1,
-        "title": "Test Page - React SSG",
-        "description": "Una página de prueba generada con React SSG",
+        "title": "Test Page - Next.js SSG",
+        "description": "Una página de prueba generada con Next.js SSG",
         "slug": "test-react-ssg",
         "subdomain": "testsite",
         "config": {
@@ -43,7 +43,7 @@ def test_ssg_system():
                 "type": "hero",
                 "content": {
                     "title": "Bienvenido a nuestro sitio",
-                    "subtitle": "Creamos experiencias digitales increíbles con React SSG",
+                    "subtitle": "Creamos experiencias digitales increíbles con Next.js SSG",
                     "cta_text": "Conoce más",
                     "cta_link": "#servicios"
                 },
@@ -55,7 +55,7 @@ def test_ssg_system():
                 "id": 3,
                 "type": "text",
                 "content": {
-                    "text": "<h2>Nuestros Servicios</h2><p>Ofrecemos soluciones modernas para tu negocio:</p><ul><li>Desarrollo web con React</li><li>Generación estática de sitios (SSG)</li><li>Optimización para motores de búsqueda</li></ul>",
+                    "text": "<h2>Nuestros Servicios</h2><p>Ofrecemos soluciones modernas para tu negocio:</p><ul><li>Desarrollo web con Next.js</li><li>Generación estática de sitios (SSG)</li><li>Optimización para motores de búsqueda</li></ul>",
                     "alignment": "center"
                 },
                 "styles": {"padding": "60px 20px"},
@@ -91,21 +91,21 @@ def test_ssg_system():
         ]
     }
     
-    print("🚀 Probando el sistema React SSG...")
+    print("🚀 Probando el sistema Next.js SSG...")
     
     # Initialize the generator
-    generator = ReactSSGGenerator("/tmp/test_ssg_output")
+    generator = NextJSSSGGenerator("/tmp/test_ssg_output")
     
     try:
-        # Test the Node.js rendering
-        print("📦 Generando HTML con React SSG...")
-        html_content = generator._render_with_node(sample_page_data)
+        # Test the Next.js rendering
+        print("📦 Generando HTML con Next.js SSG...")
+        html_content = generator._generate_with_nextjs(sample_page_data)
         
         print("✅ HTML generado exitosamente!")
         print(f"📄 Longitud del HTML: {len(html_content)} caracteres")
         
         # Save the result to a file for inspection
-        output_file = Path("/tmp/test_react_ssg_output.html")
+        output_file = Path("/tmp/test_nextjs_ssg_output.html")
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
         
@@ -141,7 +141,7 @@ def test_ssg_system():
                 all_passed = False
         
         if all_passed:
-            print("\n🎉 ¡Todas las verificaciones pasaron! El sistema React SSG funciona correctamente.")
+            print("\n🎉 ¡Todas las verificaciones pasaron! El sistema Next.js SSG funciona correctamente.")
         else:
             print("\n⚠️  Algunas verificaciones fallaron. Revisa el HTML generado.")
             

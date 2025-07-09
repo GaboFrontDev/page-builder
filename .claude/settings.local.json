@@ -29,7 +29,10 @@
       "Bash(grep:*)",
       "Bash(mv:*)",
       "Bash(ln:*)",
-      "Bash(sudo rm:*)"
+      "Bash(sudo rm:*)",
+      "Bash(python:*)",
+      "Bash(diff:*)",
+      "Bash(npx create-next-app:*)"
     ],
     "deny": []
   }

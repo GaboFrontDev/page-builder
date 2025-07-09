@@ -13,71 +13,15 @@ const Page: React.FC<PageProps> = ({ pageData }) => {
   // Sort components by position
   const sortedComponents = [...pageData.components].sort((a, b) => a.position - b.position);
 
-  // Create global styles
+  // Minimal global styles that don't conflict with Tailwind
   const globalStyles = `
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      transition: all 0.3s ease;
-    }
-    
-    a {
-      color: #007bff;
-      text-decoration: none;
-    }
-    
-    a:hover {
-      text-decoration: underline;
-    }
-    
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s ease;
-    }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    .text-center {
-      text-align: center;
-    }
-    
-    .mb-4 {
-      margin-bottom: 2rem;
-    }
-    
-    .mt-4 {
-      margin-top: 2rem;
-    }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 0 15px !important;
-      }
-      
-      h1 {
-        font-size: 2rem !important;
-      }
-      
-      .hero h1 {
-        font-size: 2.5rem !important;
-      }
-    }
+    /* Custom styles that complement Tailwind */
   `;
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
-      <div style={themeConfig.styles.body}>
+      <div>
         <main>
           {sortedComponents.map((component) => (
             <ComponentRenderer
