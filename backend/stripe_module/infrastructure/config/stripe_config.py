@@ -7,12 +7,6 @@ class StripeConfig(BaseModel):
     """Configuración para Stripe"""
     
     # Claves de API
-    print(os.getenv("STRIPE_SECRET_KEY"))
-    print(os.getenv("STRIPE_PUBLISHABLE_KEY"))
-    print(os.getenv("STRIPE_WEBHOOK_SECRET"))
-    print(os.getenv("STRIPE_PRICE_BASIC"))
-    print(os.getenv("STRIPE_PRICE_PREMIUM"))
-    print(os.getenv("STRIPE_PRICE_ENTERPRISE"))
     stripe_secret_key: str = os.getenv("STRIPE_SECRET_KEY", "sk_test_default")
     stripe_publishable_key: str = os.getenv("STRIPE_PUBLISHABLE_KEY", "pk_test_default")
     stripe_webhook_secret: str = os.getenv("STRIPE_WEBHOOK_SECRET", "whsec_test_default")

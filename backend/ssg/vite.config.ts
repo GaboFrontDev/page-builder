@@ -22,7 +22,8 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[ext]'
       },
       external: ['framer-motion']
-    }
+    },
+    cssCodeSplit: false
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')

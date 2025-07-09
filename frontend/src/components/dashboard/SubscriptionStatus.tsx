@@ -21,6 +21,21 @@ const SubscriptionStatus: React.FC = () => {
     }
   }, [user]);
 
+  // Función para recargar el estado de suscripción
+  const refreshSubscriptionStatus = () => {
+    if (user) {
+      loadSubscriptionStatus();
+    }
+  };
+
+  // Exponer la función para que otros componentes puedan usarla
+  useEffect(() => {
+    (window as any).refreshSubscriptionStatus = refreshSubscriptionStatus;
+    return () => {
+      delete (window as any).refreshSubscriptionStatus;
+    };
+  }, [user]);
+
   const loadSubscriptionStatus = async () => {
     try {
       const response = await fetch(`/api/subscription/user-status/${user?.id}`, {

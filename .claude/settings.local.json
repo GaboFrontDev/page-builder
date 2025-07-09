@@ -26,7 +26,10 @@
       "Bash(npm uninstall:*)",
       "Bash(touch:*)",
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mv:*)",
+      "Bash(ln:*)",
+      "Bash(sudo rm:*)"
     ],
     "deny": []
   }

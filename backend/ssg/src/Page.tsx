@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageData, themes, ComponentRenderer } from '@shared/index';
+import './index.css';
 
 interface PageProps {
   pageData: PageData;

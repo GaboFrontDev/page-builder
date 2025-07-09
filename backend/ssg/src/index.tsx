@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Page from './Page';
 import { PageData } from '@shared/index';
+import './index.css';
 
 // This will be called from the Python backend
 export function renderPageToString(pageData: PageData): string {
@@ -20,6 +21,7 @@ export function renderPageToHTML(pageData: PageData): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${pageData.title}</title>
     <meta name="description" content="${pageData.description}">
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
     ${pageContent}

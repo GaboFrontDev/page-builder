@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentRenderProps } from '../../types';
+import { ComponentRenderProps } from '@shared/index';
 
 const ImageSection: React.FC<ComponentRenderProps> = ({ component, theme }) => {
   const { content, styles } = component;

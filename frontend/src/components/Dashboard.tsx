@@ -54,6 +54,10 @@ const Dashboard: React.FC = () => {
             showNotification('success', '¡Suscripción activada exitosamente! 🎉');
             // Limpiar URL
             window.history.replaceState({}, document.title, '/dashboard');
+            // Recargar estado de suscripción
+            if ((window as any).refreshSubscriptionStatus) {
+              (window as any).refreshSubscriptionStatus();
+            }
           } else {
             showNotification('warning', result.message || 'El pago no se completó correctamente');
           }

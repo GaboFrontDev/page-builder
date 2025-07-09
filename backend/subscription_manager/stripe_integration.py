@@ -121,6 +121,8 @@ class StripeIntegrationService:
                 await self._handle_customer_created_webhook(event_data)
             elif event_type == "customer.subscription.created":
                 await self._handle_subscription_created_webhook(event_data)
+            elif event_type == "customer.subscription.updated":
+                await self._handle_subscription_updated_webhook(event_data)
             elif event_type == "invoice.payment_succeeded":
                 await self._handle_payment_succeeded_webhook(event_data)
             elif event_type == "invoice.payment_failed":
@@ -244,6 +246,34 @@ class StripeIntegrationService:
         
         event = StripeEvent(
             event_type=StripeEventType.SUBSCRIPTION_CREATED,
+            data=webhook_event_data,
+            created_at=datetime.now()
+        )
+        
+        await self.event_publisher.publish(event)
+    
+    async def _handle_subscription_updated_webhook(self, event_data: Dict[str, Any]) -> None:
+        """Manejar webhook de suscripción actualizada"""
+        subscription_data = event_data.get("data", {}).get("object", {})
+        subscription_id = subscription_data.get("id")
+        customer_id = subscription_data.get("customer")
+        
+        if not subscription_id or not customer_id:
+            logger.warning("No se encontró subscription_id o customer_id en webhook de actualización")
+            return
+        
+        webhook_event_data = StripeEventData(
+            stripe_event_id=event_data.get("id"),
+            event_type=StripeEventType.SUBSCRIPTION_UPDATED,
+            object_id=subscription_id,
+            customer_id=customer_id,
+            subscription_id=subscription_id,
+            metadata=subscription_data.get("metadata", {}),
+            occurred_at=datetime.fromtimestamp(event_data.get("created", 0))
+        )
+        
+        event = StripeEvent(
+            event_type=StripeEventType.SUBSCRIPTION_UPDATED,
             data=webhook_event_data,
             created_at=datetime.now()
         )

@@ -18,6 +18,7 @@ def setup_subscription_manager(db: Session) -> None:
         # Suscribir el handler a los eventos de Stripe que nos interesan
         event_publisher.subscribe(StripeEventType.CUSTOMER_CREATED, handler)
         event_publisher.subscribe(StripeEventType.SUBSCRIPTION_CREATED, handler)
+        event_publisher.subscribe(StripeEventType.SUBSCRIPTION_UPDATED, handler)
         event_publisher.subscribe(StripeEventType.INVOICE_PAYMENT_SUCCEEDED, handler)
         event_publisher.subscribe(StripeEventType.INVOICE_PAYMENT_FAILED, handler)
         event_publisher.subscribe(StripeEventType.SUBSCRIPTION_DELETED, handler)

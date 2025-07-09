@@ -21,6 +21,8 @@ class StripeSubscriptionEventHandler(EventSubscriber):
                 await self._handle_customer_created(event)
             elif event.event_type == StripeEventType.SUBSCRIPTION_CREATED:
                 await self._handle_subscription_created(event)
+            elif event.event_type == StripeEventType.SUBSCRIPTION_UPDATED:
+                await self._handle_subscription_updated(event)
             elif event.event_type == StripeEventType.INVOICE_PAYMENT_SUCCEEDED:
                 await self._handle_payment_succeeded(event)
             elif event.event_type == StripeEventType.INVOICE_PAYMENT_FAILED:
@@ -66,6 +68,25 @@ class StripeSubscriptionEventHandler(EventSubscriber):
             user.subscription_active = True
             self.db.commit()
             logger.info(f"Suscripción activada para usuario {user.email}")
+        else:
+            logger.warning(f"No se encontró usuario con stripe_customer_id {customer_id}")
+    
+    async def _handle_subscription_updated(self, event: StripeEvent) -> None:
+        """Maneja la actualización de una suscripción (cambio de plan)"""
+        customer_id = event.data.customer_id
+        subscription_id = event.data.subscription_id
+        
+        if not customer_id:
+            logger.warning("No se encontró customer_id en evento de actualización de suscripción")
+            return
+        
+        # Encontrar al usuario por stripe_customer_id
+        user = self.db.query(User).filter(User.stripe_customer_id == customer_id).first()
+        if user:
+            # La suscripción sigue activa, solo se actualizó el plan
+            user.subscription_active = True
+            self.db.commit()
+            logger.info(f"Suscripción actualizada para usuario {user.email} (subscription_id: {subscription_id})")
         else:
             logger.warning(f"No se encontró usuario con stripe_customer_id {customer_id}")
     
