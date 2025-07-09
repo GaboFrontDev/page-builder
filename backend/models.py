@@ -13,9 +13,15 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    subscription_active = Column(Boolean, default=False)
+    stripe_customer_id = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
     
     pages = relationship("Page", back_populates="owner")
+    # Relaciones con Stripe - Temporalmente comentadas para evitar errores
+    # subscription = relationship("SubscriptionModel", back_populates="user", uselist=False)
+    # customer = relationship("CustomerModel", back_populates="user", uselist=False)
+    # user_extension = relationship("UserExtensionModel", back_populates="user", uselist=False)
 
 class Page(Base):
     __tablename__ = "pages"

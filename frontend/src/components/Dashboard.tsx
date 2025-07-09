@@ -12,6 +12,7 @@ import {
   SubdomainSection,
   LoadingSpinner
 } from './dashboard/index';
+import SubscriptionStatus from './dashboard/SubscriptionStatus';
 
 const Dashboard: React.FC = () => {
   const { logout } = useAuth();
@@ -22,7 +23,35 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     loadPages();
+    checkPaymentSuccess();
   }, []);
+
+  const checkPaymentSuccess = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    const success = urlParams.get('success');
+    
+    if (sessionId && success === 'true') {
+      try {
+        const response = await fetch(`/api/subscription/verify-payment/${sessionId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          }
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            showNotification('success', '¡Suscripción activada exitosamente!');
+            // Limpiar URL
+            window.history.replaceState({}, document.title, '/');
+          }
+        }
+      } catch (error) {
+        console.error('Error verificando pago:', error);
+      }
+    }
+  };
 
   const loadPages = async () => {
     try {
@@ -82,7 +111,14 @@ const Dashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <DashboardTitle />
         
-        <StatsCards pages={pages} pagesBySubdomain={pagesBySubdomain} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2">
+            <StatsCards pages={pages} pagesBySubdomain={pagesBySubdomain} />
+          </div>
+          <div>
+            <SubscriptionStatus />
+          </div>
+        </div>
         
         <ErrorAlert error={error} />
 
