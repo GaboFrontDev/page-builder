@@ -17,9 +17,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Install Node.js dependencies for SSG
-RUN cd ssg && rm -rf node_modules package-lock.json && npm install
+RUN cd nextjs-ssg && rm -rf node_modules package-lock.json && npm install
 
 EXPOSE 3001
 
 # Build SSG and start the application
-CMD ["sh", "-c", "cd ssg && rm -rf node_modules package-lock.json && npm install && npm run build && cd .. && uvicorn main:app --host 0.0.0.0 --port 3001 --reload"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 3001 --reload"]

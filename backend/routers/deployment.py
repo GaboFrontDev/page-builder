@@ -231,7 +231,7 @@ def deploy_page_task(page: Page, db: Session):
         page_fresh = db_session.query(Page).filter(Page.id == page.id).first()
         if page_fresh:
             result_path = generator.deploy_page(page_fresh, db_session)
-            print(f"Page deployed successfully: {page_fresh.slug} -> {result_path}")
+            print(f"Page deployed successfully started: {page_fresh.slug} -> {result_path}")
         
         db_session.close()
     except Exception as e:

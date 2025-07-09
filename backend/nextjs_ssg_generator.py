@@ -102,8 +102,10 @@ class NextJSSSGGenerator:
     def deploy_page(self, page: Page, db: Session) -> str:
         """Generate and deploy a page using Next.js SSG"""
         try:
+            print(f"Deploying page {page.slug} to {self.output_dir}")
             # Generate HTML
             html_content = self.generate_page(page, db)
+            print(f"Generated HTML for page {page.slug}")
             
             # Create directory for the subdomain if not exists
             subdomain_dir = self.output_dir / page.subdomain
