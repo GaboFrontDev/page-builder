@@ -1,35 +1,109 @@
 {
-  "id": 1,
-  "title": "Demo Landing Page",
-  "description": "Generated with Next.js SSG",
-  "slug": "demo",
-  "subdomain": "demo",
+  "id": 57,
+  "title": "Nueva P\u00e1gina",
+  "description": "Descripci\u00f3n de la nueva p\u00e1gina",
+  "slug": "",
+  "subdomain": "teststripe",
   "config": {
-    "theme": "modern"
+    "theme": "dark"
   },
   "components": [
     {
-      "id": 1,
-      "type": "hero",
+      "id": 60,
+      "type": "header",
       "content": {
-        "title": "Welcome to Next.js SSG",
-        "subtitle": "Better performance and class handling",
-        "cta_text": "Get Started",
-        "cta_link": "#"
+        "title": "Mi Sitio Web",
+        "menu_items": [
+          {
+            "text": "Inicio",
+            "link": "#"
+          },
+          {
+            "text": "Servicios",
+            "link": "#servicios"
+          },
+          {
+            "text": "Contacto",
+            "link": "#contacto"
+          }
+        ]
       },
-      "styles": {},
+      "styles": {
+        "padding": "20px",
+        "borderBottom": "1px solid #eee"
+      },
+      "position": 0,
+      "is_visible": true
+    },
+    {
+      "id": 51,
+      "type": "header",
+      "content": {
+        "title": "Mi Sitio Web",
+        "menu_items": [
+          {
+            "text": "Inicio",
+            "link": "#"
+          },
+          {
+            "text": "Servicios",
+            "link": "#servicios"
+          },
+          {
+            "text": "Contacto",
+            "link": "#contacto"
+          }
+        ]
+      },
+      "styles": {
+        "padding": "20px",
+        "borderBottom": "1px solid #eee"
+      },
       "position": 1,
       "is_visible": true
     },
     {
-      "id": 2,
+      "id": 50,
+      "type": "hero",
+      "content": {
+        "title": "T\u00edtulo principal",
+        "subtitle": "Subt\u00edtulo descriptivo",
+        "cta_text": "Bot\u00f3n de acci\u00f3n",
+        "cta_link": "#"
+      },
+      "styles": {
+        "padding": "80px 20px",
+        "textAlign": "center"
+      },
+      "position": 2,
+      "is_visible": true
+    },
+    {
+      "id": 52,
       "type": "text",
       "content": {
-        "text": "<h2>Why Next.js?</h2><p>Next.js provides better optimization for CSS classes and static generation.</p>",
-        "alignment": "center"
+        "text": "<p>Contenido de texto. Puedes usar <strong>HTML</strong> aqu\u00ed.</p>",
+        "alignment": "left"
       },
-      "styles": {},
-      "position": 2,
+      "styles": {
+        "padding": "40px 20px"
+      },
+      "position": 3,
+      "is_visible": true
+    },
+    {
+      "id": 53,
+      "type": "image",
+      "content": {
+        "src": "https://placehold.co/600x400",
+        "alt": "Imagen de ejemplo",
+        "caption": "Descripci\u00f3n de la imagen"
+      },
+      "styles": {
+        "padding": "40px 20px",
+        "textAlign": "center"
+      },
+      "position": 4,
       "is_visible": true
     }
   ]
