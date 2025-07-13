@@ -1,18 +1,18 @@
 {
-  "id": 61,
+  "id": 57,
   "title": "Nueva P\u00e1gina",
   "description": "Descripci\u00f3n de la nueva p\u00e1gina",
-  "slug": "pagina-1752032461070",
+  "slug": "",
   "subdomain": "teststripe",
   "config": {
     "theme": "dark"
   },
   "components": [
     {
-      "id": 54,
+      "id": 60,
       "type": "header",
       "content": {
-        "title": "Mi Sitio Web",
+        "title": "Builder",
         "menu_items": [
           {
             "text": "Inicio",
@@ -36,33 +36,47 @@
       "is_visible": true
     },
     {
-      "id": 56,
+      "id": 50,
       "type": "hero",
       "content": {
-        "title": "T\u00edtulo principal",
+        "title": "T\u00edtulo principal 2345",
         "subtitle": "Subt\u00edtulo descriptivo",
         "cta_text": "Bot\u00f3n de acci\u00f3n",
-        "cta_link": "#",
-        "image": "https://placehold.co/600x400"
+        "cta_link": "#"
       },
       "styles": {
         "padding": "80px 20px",
         "textAlign": "center"
       },
-      "position": 1,
+      "position": 2,
       "is_visible": true
     },
     {
-      "id": 55,
+      "id": 52,
       "type": "text",
       "content": {
         "text": "<p>Contenido de texto. Puedes usar <strong>HTML</strong> aqu\u00ed.</p>",
-        "alignment": "center"
+        "alignment": "left"
       },
       "styles": {
         "padding": "40px 20px"
       },
-      "position": 2,
+      "position": 3,
+      "is_visible": true
+    },
+    {
+      "id": 53,
+      "type": "image",
+      "content": {
+        "src": "https://placehold.co/600x400",
+        "alt": "Imagen de ejemplo",
+        "caption": "Descripci\u00f3n de la imagen"
+      },
+      "styles": {
+        "padding": "40px 20px",
+        "textAlign": "center"
+      },
+      "position": 4,
       "is_visible": true
     }
   ]
