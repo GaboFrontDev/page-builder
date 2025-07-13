@@ -121,6 +121,8 @@ const ComponentSidebar: React.FC<ComponentSidebarProps> = ({
                     Posición
                   </label>
                   <input
+                    title="Posición"
+                    placeholder="Posición"
                     type="number"
                     value={selectedComponent.position}
                     onChange={(e) => onUpdateComponent(selectedComponent.id, {

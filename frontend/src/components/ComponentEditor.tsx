@@ -218,6 +218,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
           Alineación
         </label>
         <select
+          title="Alineación"
           value={getStringValue(content.alignment) || 'left'}
           onChange={(e) => handleContentChange('alignment', e.target.value)}
           className="form-input"
@@ -306,6 +307,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
           Variante
         </label>
         <select
+          title="Variante"
           value={getStringValue(content.variant) || 'primary'}
           onChange={(e) => handleContentChange('variant', e.target.value)}
           className="form-input"
@@ -407,6 +409,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
           Editar {component.type}
         </h3>
         <button
+          title="Cerrar"
           onClick={onClose}
           className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
         >
@@ -445,6 +448,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
                     Color de Fondo
                   </label>
                   <input
+                    title="Color de Fondo"
                     type="color"
                     value={getStringValue(styles.backgroundColor) || '#ffffff'}
                     onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
@@ -456,6 +460,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
                     Color de Texto
                   </label>
                   <input
+                    title="Color de Texto"
                     type="color"
                     value={getStringValue(styles.color) || '#000000'}
                     onChange={(e) => handleStyleChange('color', e.target.value)}
@@ -469,6 +474,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
                   Padding
                 </label>
                 <input
+                  title="Padding"
                   type="text"
                   value={getStringValue(styles.padding)}
                   onChange={(e) => handleStyleChange('padding', e.target.value)}
@@ -508,6 +514,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
                     Peso de Fuente
                   </label>
                   <select
+                    title="Peso de Fuente"
                     value={getStringValue(styles.fontWeight) || 'normal'}
                     onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
                     className="form-input"
