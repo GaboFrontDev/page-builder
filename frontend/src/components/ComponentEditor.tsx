@@ -90,7 +90,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
           Elementos del Menú
         </label>
         {(content.menu_items as any[] || []).map((item, index) => (
-          <div key={index} className="flex gap-2 mb-3">
+          <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3">
             <input
               type="text"
               value={getStringValue(item?.text)}
@@ -107,7 +107,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
             />
             <button
               onClick={() => removeArrayItem('menu_items', index)}
-              className="btn btn-danger px-3"
+              className="btn btn-danger px-3 self-start sm:self-auto"
               title="Eliminar elemento"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -340,7 +340,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
           Enlaces
         </label>
         {(content.links as any[] || []).map((link, index) => (
-          <div key={index} className="flex gap-2 mb-3">
+          <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3">
             <input
               type="text"
               value={getStringValue(link?.text)}
@@ -357,7 +357,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
             />
             <button
               onClick={() => removeArrayItem('links', index)}
-              className="btn btn-danger px-3"
+              className="btn btn-danger px-3 self-start sm:self-auto"
               title="Eliminar enlace"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -401,30 +401,31 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
   return (
     <div className="h-full flex flex-col bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-slate-700/50">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200/50 dark:border-slate-700/50">
+        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
-          Editar {component.type}
+          <span className="hidden sm:inline">Editar {component.type}</span>
+          <span className="sm:hidden">{component.type}</span>
         </h3>
         <button
           title="Cerrar"
           onClick={onClose}
           className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="space-y-8">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="space-y-6 sm:space-y-8">
           {/* Content Editor */}
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
               <svg className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v14a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v14a4 4 0 004 4h4a4 4 0 001-4V5zM7 5h10" />
               </svg>
@@ -435,14 +436,14 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
 
           {/* Styles Editor */}
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
               <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v14a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v14a4 4 0 004 4h4a4 4 0 001-4V5zM7 5h10" />
               </svg>
               Estilos
             </h4>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Color de Fondo
@@ -496,7 +497,7 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tamaño de Fuente
@@ -560,15 +561,16 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-gray-200/50 dark:border-slate-700/50">
+      <div className="p-4 sm:p-6 border-t border-gray-200/50 dark:border-slate-700/50">
         <button
           onClick={() => onDeleteComponent(component.id)}
-          className="w-full btn btn-danger"
+          className="w-full btn btn-danger text-sm sm:text-base"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
-          Eliminar Componente
+          <span className="hidden sm:inline">Eliminar Componente</span>
+          <span className="sm:hidden">Eliminar</span>
         </button>
       </div>
     </div>

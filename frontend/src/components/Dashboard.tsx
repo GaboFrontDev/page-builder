@@ -131,11 +131,11 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <DashboardHeader onLogout={logout} />
 
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
         <DashboardTitle />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="xl:col-span-2">
             <StatsCards pages={pages} pagesBySubdomain={pagesBySubdomain} />
           </div>
           <div>
@@ -146,7 +146,7 @@ const Dashboard: React.FC = () => {
         <ErrorAlert error={error} />
 
         {/* Lista de Páginas agrupadas por subdominio */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {Object.keys(pagesBySubdomain).length === 0 ? (
             <EmptyState />
           ) : (

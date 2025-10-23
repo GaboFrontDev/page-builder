@@ -59,28 +59,29 @@ const ComponentSidebar: React.FC<ComponentSidebarProps> = ({
   ];
 
   return (
-    <div className="p-6">
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-        <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        Agregar Componentes
+        <span className="hidden sm:inline">Agregar Componentes</span>
+        <span className="sm:hidden">Componentes</span>
       </h3>
       
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {componentTypes.map((componentType) => (
           <button
             key={componentType.type}
             onClick={() => onAddComponent(componentType.type)}
-            className="w-full text-left p-4 bg-white dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-200 group"
+            className="w-full text-left p-3 sm:p-4 bg-white dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-200 group"
           >
             <div className="flex items-center">
-              <span className="text-2xl mr-4 group-hover:scale-110 transition-transform duration-200">{componentType.icon}</span>
-              <div>
-                <div className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+              <span className="text-xl sm:text-2xl mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-200">{componentType.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 truncate">
                   {componentType.name}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
                   {componentType.description}
                 </div>
               </div>
@@ -90,26 +91,27 @@ const ComponentSidebar: React.FC<ComponentSidebarProps> = ({
       </div>
 
       {selectedComponent && (
-        <div className="mt-8">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-            <svg className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mt-6 sm:mt-8">
+          <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Componente Seleccionado
+            <span className="hidden sm:inline">Componente Seleccionado</span>
+            <span className="sm:hidden">Seleccionado</span>
           </h3>
           
           <div className="card">
             <div className="card-body">
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-semibold text-gray-900 dark:text-white">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <span className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate">
                   {componentTypes.find(t => t.type === selectedComponent.type)?.name}
                 </span>
                 <button
                   onClick={() => onDeleteComponent(selectedComponent.id)}
-                  className="p-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+                  className="p-1.5 sm:p-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200 flex-shrink-0"
                   title="Eliminar componente"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
@@ -153,34 +155,34 @@ const ComponentSidebar: React.FC<ComponentSidebarProps> = ({
         </div>
       )}
 
-      <div className="mt-8">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="mt-6 sm:mt-8">
+        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           Ayuda
         </h3>
         
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-xl">
-          <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 p-3 sm:p-4 rounded-xl">
+          <h4 className="font-semibold text-sm sm:text-base text-blue-900 dark:text-blue-100 mb-2 sm:mb-3">
             Cómo usar el editor
           </h4>
-          <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
+          <ul className="text-xs sm:text-sm text-blue-800 dark:text-blue-200 space-y-1.5 sm:space-y-2">
             <li className="flex items-start">
-              <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-              Haz clic en un componente para agregarlo
+              <span className="text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+              <span>Haz clic en un componente para agregarlo</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-              Selecciona componentes en el canvas para editarlos
+              <span className="text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+              <span>Selecciona componentes en el canvas para editarlos</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-              Arrastra componentes para reordenarlos
+              <span className="text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+              <span>Arrastra componentes para reordenarlos</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-              Usa el panel derecho para editar contenido
+              <span className="text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+              <span>Usa el panel derecho para editar contenido</span>
             </li>
           </ul>
         </div>
