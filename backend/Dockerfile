@@ -15,6 +15,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+COPY ../shared ./nextjs-ssg/shared
+
 
 # Install Node.js dependencies for SSG
 RUN cd nextjs-ssg && rm -rf node_modules package-lock.json && npm install
