@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentRenderProps } from '@shared/index';
+import { ComponentRenderProps } from '../../types';
 
 const ImageSection: React.FC<ComponentRenderProps> = ({ component, theme }) => {
   const { content, styles } = component;
@@ -12,9 +12,9 @@ const ImageSection: React.FC<ComponentRenderProps> = ({ component, theme }) => {
 
   return (
     <section className="py-10 px-5 text-center">
-      <img 
-        src={src} 
-        alt={alt} 
+      <img
+        src={src}
+        alt={alt}
         className="max-w-full h-auto rounded-lg mx-auto"
       />
       {caption && (

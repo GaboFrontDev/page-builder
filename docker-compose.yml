@@ -68,6 +68,7 @@ services:
       - ./backend:/app
       - ./generated-sites:/var/www/sites
       - ./shared:/app/shared
+      - ./shared:/shared
 
   # Frontend Builder
   frontend:

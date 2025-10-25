@@ -1,36 +1,93 @@
 {
-  "id": 2,
+  "id": 1,
   "title": "Nueva P\u00e1gina",
   "description": "Descripci\u00f3n de la nueva p\u00e1gina",
-  "slug": "pagina-1761337833728",
+  "slug": "about",
   "subdomain": "admin",
   "config": {
     "theme": "default"
   },
   "components": [
     {
-      "id": 2,
+      "id": 1,
       "type": "header",
       "content": {
-        "title": "Mi Sitio Web",
+        "title": "Aqui andamos pa",
         "menu_items": [
           {
             "text": "Inicio",
-            "link": "#"
+            "link": "/"
           },
           {
             "text": "Servicios",
             "link": "#servicios"
+          },
+          {
+            "text": "Contacto",
+            "link": "#contacto"
           }
         ]
       },
       "styles": {
         "padding": "20px",
-        "borderBottom": "1px solid #eee",
-        "backgroundColor": "#ffffff",
-        "color": "#fafafa"
+        "borderBottom": "1px solid #eee"
       },
       "position": 0,
+      "is_visible": true
+    },
+    {
+      "id": 7,
+      "type": "button",
+      "content": {
+        "text": "Hacer clic aqu\u00ed",
+        "link": "#",
+        "variant": "primary"
+      },
+      "styles": {
+        "padding": "20px",
+        "textAlign": "center"
+      },
+      "position": 1,
+      "is_visible": true
+    },
+    {
+      "id": 5,
+      "type": "button",
+      "content": {
+        "text": "Hacer clic aqu\u00ed",
+        "link": "#",
+        "variant": "primary"
+      },
+      "styles": {
+        "padding": "20px",
+        "textAlign": "center"
+      },
+      "position": 2,
+      "is_visible": true
+    },
+    {
+      "id": 6,
+      "type": "footer",
+      "content": {
+        "text": "\u00a9 2025 Mi Sitio Web. Todos los derechos reservados.",
+        "links": [
+          {
+            "text": "Pol\u00edtica de Privacidad",
+            "url": "#"
+          },
+          {
+            "text": "T\u00e9rminos de Uso",
+            "url": "#"
+          }
+        ]
+      },
+      "styles": {
+        "padding": "40px 20px",
+        "textAlign": "center",
+        "borderTop": "1px solid #eee",
+        "marginTop": "40px"
+      },
+      "position": 3,
       "is_visible": true
     }
   ]

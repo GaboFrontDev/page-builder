@@ -13,10 +13,10 @@ interface ComponentRendererProps {
   isPreview?: boolean;
 }
 
-const ComponentRenderer: React.FC<ComponentRendererProps> = ({ 
-  component, 
-  theme, 
-  isPreview = false 
+const ComponentRenderer: React.FC<ComponentRendererProps> = ({
+  component,
+  theme,
+  isPreview = false
 }) => {
   if (!component.is_visible) return null;
 
@@ -44,9 +44,9 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({
         );
       }
       return (
-        <div style={{ 
-          padding: '20px', 
-          border: '1px dashed #ccc', 
+        <div style={{
+          padding: '20px',
+          border: '1px dashed #ccc',
           margin: '10px 0',
           color: theme === 'dark' || theme === 'modern' ? '#fff' : '#333'
         }}>
