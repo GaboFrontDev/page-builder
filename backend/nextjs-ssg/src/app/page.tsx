@@ -27,7 +27,7 @@ export default async function Home() {
 
   return (
     <main>
-      <ComponentRenderer pageData={pageData} />
+      {pageData.components.map((component, index) => <ComponentRenderer key={index} component={component} theme="dark" />)}
     </main>
   );
 }

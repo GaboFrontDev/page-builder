@@ -1,6 +1,8 @@
+import { ComponentType } from "@shared/types";
+
 export interface Component {
   id: number;
-  type: string;
+  type: ComponentType;
   content: Record<string, unknown>;
   styles: Record<string, unknown>;
   position: number;
